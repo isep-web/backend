@@ -25,24 +25,24 @@ DROP TABLE IF EXISTS `application`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `application` (
-  `idapplication` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `from` int NOT NULL,
   `to` int NOT NULL,
-  `idhouse` int NOT NULL,
+  `id_house` int NOT NULL,
   `apply_date` datetime NOT NULL,
   `is_accepted` tinyint NOT NULL DEFAULT '0',
   `accept_date` datetime DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
-  `guest_number` tinyint DEFAULT NULL,
-  PRIMARY KEY (`idapplication`),
-  UNIQUE KEY `idapplication_UNIQUE` (`idapplication`),
-  KEY `app_fk_from_idx` (`from`),
-  KEY `app_fk_to_idx` (`to`),
-  KEY `app_fk_house` (`idhouse`),
-  CONSTRAINT `app_fk_from` FOREIGN KEY (`from`) REFERENCES `user` (`iduser`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `app_fk_house` FOREIGN KEY (`idhouse`) REFERENCES `house` (`idhouse`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `app_fk_to` FOREIGN KEY (`to`) REFERENCES `user` (`iduser`) ON DELETE RESTRICT ON UPDATE CASCADE
+  `guests` tinyint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idapplication_UNIQUE` (`id`),
+  KEY `app_user_fk_idx` (`from`),
+  KEY `app_user_fk_to_idx` (`to`),
+  KEY `app_house_fk_idx` (`id_house`),
+  CONSTRAINT `app_house_fk` FOREIGN KEY (`id_house`) REFERENCES `house` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `app_user_fk_from` FOREIGN KEY (`from`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `app_user_fk_to` FOREIGN KEY (`to`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -63,21 +63,21 @@ DROP TABLE IF EXISTS `house`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `house` (
-  `idhouse` int NOT NULL,
-  `iduser` int NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `location` varchar(45) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_user` int NOT NULL,
+  `title` varchar(45) NOT NULL,
+  `address` json NOT NULL,
   `rooms` json NOT NULL,
   `amenities` json NOT NULL,
-  `description` varchar(45) DEFAULT NULL,
-  `rules` varchar(45) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `rules` json DEFAULT NULL,
   `is_verified` tinyint NOT NULL DEFAULT '0',
-  `guests_number` tinyint NOT NULL,
+  `guests` tinyint NOT NULL,
   `publish_date` datetime NOT NULL,
-  PRIMARY KEY (`idhouse`),
-  UNIQUE KEY `idhouse_UNIQUE` (`idhouse`),
-  KEY `house_fk_user_idx` (`iduser`),
-  CONSTRAINT `house_fk_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON UPDATE CASCADE
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idhouse_UNIQUE` (`id`),
+  KEY `house_user_fk_idx` (`id_user`),
+  CONSTRAINT `house_user_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -98,19 +98,19 @@ DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `message` (
-  `idmessage` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `from` int NOT NULL,
   `to` int NOT NULL,
-  `type` varchar(45) DEFAULT NULL,
+  `type` varchar(45) NOT NULL,
   `is_readed` tinyint NOT NULL,
   `send_time` date NOT NULL,
   `content` json NOT NULL,
-  PRIMARY KEY (`idmessage`),
-  UNIQUE KEY `idmessage_UNIQUE` (`idmessage`),
-  KEY `message_from_idx` (`from`),
-  KEY `message_fk_to_idx` (`to`),
-  CONSTRAINT `message_fk_from` FOREIGN KEY (`from`) REFERENCES `user` (`iduser`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `message_fk_to` FOREIGN KEY (`to`) REFERENCES `user` (`iduser`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idmessage_UNIQUE` (`id`),
+  KEY `msg_user_fk_from_idx` (`from`),
+  KEY `msg_user_fk_to_idx` (`to`),
+  CONSTRAINT `msg_user_fk_from` FOREIGN KEY (`from`) REFERENCES `user` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `msg_user_fk_to` FOREIGN KEY (`to`) REFERENCES `user` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -131,18 +131,20 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `iduser` int NOT NULL,
-  `name` varchar(45) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
   `email` varchar(45) DEFAULT NULL,
   `password` varchar(200) NOT NULL,
   `phone` varchar(45) DEFAULT NULL,
   `age` tinyint unsigned DEFAULT NULL,
-  `sex` varchar(20) DEFAULT NULL,
-  `language` varchar(45) DEFAULT NULL,
+  `gender` varchar(45) DEFAULT NULL,
+  `language` varchar(100) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `create_date` datetime NOT NULL,
-  PRIMARY KEY (`iduser`),
-  UNIQUE KEY `iduser_UNIQUE` (`iduser`)
+  `location` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `iduser_UNIQUE` (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -164,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-27 18:35:50
+-- Dump completed on 2021-05-03  3:09:30
