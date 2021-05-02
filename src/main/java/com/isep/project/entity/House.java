@@ -23,7 +23,7 @@ public class House implements Serializable
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "id_user", nullable = false)
     private Integer idUser;

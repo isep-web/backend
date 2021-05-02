@@ -3,7 +3,6 @@ spring:
         url: jdbc:mysql://localhost:3306/web?characterEncoding=UTF-8&autoReconnect=true
         username: root
         password: root
-        driver-class-name: com.mysql.jdbc.Driver
     jpa:
         hibernate:
             ddl-auto: update #自动更新

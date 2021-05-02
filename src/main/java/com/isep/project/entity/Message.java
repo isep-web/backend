@@ -23,7 +23,7 @@ public class Message implements Serializable
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "from", nullable = false)
     private Integer from;
