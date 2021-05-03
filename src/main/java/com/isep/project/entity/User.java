@@ -21,7 +21,7 @@ public class User implements Serializable
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "display_name", nullable = false)
     private String displayName;
@@ -32,8 +32,8 @@ public class User implements Serializable
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "age")
-    private Integer age;
+    @Column(name = "birthday")
+    private Date birthday;
 
     @Column(name = "gender")
     private String gender;
@@ -44,7 +44,7 @@ public class User implements Serializable
     @Column(name = "description")
     private String description;
 
-    @Column(name = "create_date", nullable = false)
+    @Column(name = "create_date", nullable = false, updatable = false)
     private Date createDate;
 
     @Column(name = "location")
