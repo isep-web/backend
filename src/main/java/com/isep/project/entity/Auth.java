@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
@@ -18,6 +20,7 @@ public class Auth implements Serializable
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "username", nullable = false)
@@ -29,10 +32,10 @@ public class Auth implements Serializable
     @Column(name = "role", nullable = false)
     private String role = "user";
 
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date", nullable = false, insertable = false, updatable = false)
     private Date createdDate;
 
-    @Column(name = "last_updated_date")
+    @Column(name = "last_updated_date", insertable = false, updatable = false)
     private Date lastUpdatedDate;
 
 }

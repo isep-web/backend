@@ -9,5 +9,9 @@ spring:
         show-sql: true  #日志中显示sql语句
     application:
         name: backend
+#swagger:
+#    enabled: true
+#    exclude-path: /error
+
 server:
     port: 12546
