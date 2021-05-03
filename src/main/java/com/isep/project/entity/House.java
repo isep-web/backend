@@ -4,13 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Entity
@@ -26,7 +24,7 @@ public class House implements Serializable
     private Long id;
 
     @Column(name = "id_user", nullable = false)
-    private Integer idUser;
+    private Long idUser;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -35,13 +33,16 @@ public class House implements Serializable
     private String description;
 
     @Column(name = "is_verified", nullable = false)
-    private Boolean verified;
+    private Boolean verified = Boolean.FALSE;
 
     @Column(name = "guests", nullable = false)
     private Integer guests;
 
-    @Column(name = "publish_date", nullable = false)
-    private Date publishDate;
+    @Column(name = "created_date", nullable = false)
+    private Date createdDate;
+
+    @Column(name = "last_updated_date")
+    private Date lastUpdatedDate;
 
     @Column(name = "address", nullable = false)
     private String address;

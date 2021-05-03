@@ -1,6 +1,7 @@
 package com.isep.project.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,5 +28,11 @@ public class Auth implements Serializable
 
     @Column(name = "role", nullable = false)
     private String role = "user";
+
+    @Column(name = "created_date", nullable = false)
+    private Date createdDate;
+
+    @Column(name = "last_updated_date")
+    private Date lastUpdatedDate;
 
 }
