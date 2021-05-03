@@ -1,10 +1,10 @@
 package com.isep.project.repository;
 
-import com.isep.project.entity.User;
+import com.isep.project.entity.Auth;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User>
+public interface AuthRepository extends JpaRepository<Auth, Integer>, JpaSpecificationExecutor<Auth>
 {
 
 }
