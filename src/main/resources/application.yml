@@ -50,4 +50,4 @@ spring:
 #    try-host: http://localhost:${server.port}
 
 server:
-    port: 12546
+    port: 17698

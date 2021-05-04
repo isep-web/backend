@@ -1,6 +1,5 @@
 package com.isep.project.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -15,12 +14,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Entity
-@Table(name = "t_house")
+@Table(name = "t_userdtl")
 @EntityListeners(AuditingEntityListener.class)
-public class House implements Serializable
+public class Userdtl implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
+
 
     @Id
     @Column(name = "f_id", nullable = false)
@@ -30,24 +30,26 @@ public class House implements Serializable
     @Column(name = "f_user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "f_title", nullable = false)
-    private String title = "";
+    @Column(name = "f_display_name", nullable = false)
+    private String displayName = "";
 
-    @Column(name = "f_area", nullable = false)
-    private Integer area = 0;
+    @Column(name = "f_email", nullable = false)
+    private String email = "";
+
+    @Column(name = "f_phone", nullable = false)
+    private String phone = "";
+
+    @Column(name = "f_birth_date")
+    private Date birthDate;
+
+    @Column(name = "f_gender", nullable = false)
+    private String gender = "";
+
+    @Column(name = "f_language", nullable = false)
+    private String language = "";
 
     @Column(name = "f_description", nullable = false)
     private String description = "";
-
-    /**
-     * 0=no/1=yes
-     */
-    @Schema(allowableValues = "0,1", description = "0=no/1=yes", defaultValue = "0")
-    @Column(name = "is_published", nullable = false)
-    private Boolean published = Boolean.FALSE;
-
-    @Column(name = "f_guest_number", nullable = false)
-    private Integer guestNumber = 0;
 
     @Column(name = "f_created_time")
     private Date createdTime;

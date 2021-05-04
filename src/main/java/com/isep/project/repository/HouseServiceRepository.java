@@ -1,10 +1,11 @@
 package com.isep.project.repository;
 
-import com.isep.project.entity.Auth;
+import com.isep.project.entity.HouseService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface AuthRepository extends JpaRepository<Auth, Long>, JpaSpecificationExecutor<Auth>
+public interface HouseServiceRepository extends JpaRepository<HouseService, Long>,
+        JpaSpecificationExecutor<HouseService>
 {
 
 }
