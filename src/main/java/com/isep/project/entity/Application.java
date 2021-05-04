@@ -1,32 +1,30 @@
 package com.isep.project.entity;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * @author : Xuan MIAO
+ * @version : 1.0.0
+ * @date : 2021/5/5
+ */
 @Data
 @Entity
 @Table(name = "t_application")
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
-public class Application implements Serializable
+public class Application extends BaseEntity implements Serializable
 {
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @Column(name = "f_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private static final long serialVersionUID = -1076269535680923985L;
 
     @Column(name = "f_source_user_id", nullable = false)
     private Long sourceUserId;
@@ -52,11 +50,5 @@ public class Application implements Serializable
 
     @Column(name = "f_guest_number", nullable = false)
     private Integer guestNumber = 0;
-
-    @Column(name = "f_created_time")
-    private Date createdTime;
-
-    @Column(name = "f_last_updated_time")
-    private Date lastUpdatedTime;
 
 }

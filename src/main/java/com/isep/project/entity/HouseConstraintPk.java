@@ -9,12 +9,12 @@ import lombok.Data;
  * @date : 2021/5/4
  */
 @Data
-public class HouseAmenityPK implements Serializable
+public class HouseConstraintPk implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
 
     private Long houseId;
 
-    private Long amenityId;
+    private Long constraintId;
 }
