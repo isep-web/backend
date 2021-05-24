@@ -35,15 +35,6 @@ CREATE TABLE `t_amenity` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_amenity`
---
-
-LOCK TABLES `t_amenity` WRITE;
-/*!40000 ALTER TABLE `t_amenity` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_amenity` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `t_application`
 --
 
@@ -72,15 +63,6 @@ CREATE TABLE `t_application` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_application`
---
-
-LOCK TABLES `t_application` WRITE;
-/*!40000 ALTER TABLE `t_application` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_application` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `t_constraint`
 --
 
@@ -96,15 +78,6 @@ CREATE TABLE `t_constraint` (
   PRIMARY KEY (`f_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_constraint`
---
-
-LOCK TABLES `t_constraint` WRITE;
-/*!40000 ALTER TABLE `t_constraint` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_constraint` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `t_house`
@@ -128,17 +101,8 @@ CREATE TABLE `t_house` (
   PRIMARY KEY (`f_id`),
   KEY `fk_house_user_idx` (`f_user_id`),
   CONSTRAINT `fk_house_user` FOREIGN KEY (`f_user_id`) REFERENCES `t_user` (`f_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_house`
---
-
-LOCK TABLES `t_house` WRITE;
-/*!40000 ALTER TABLE `t_house` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_house` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `t_house__amenity`
@@ -148,25 +112,16 @@ DROP TABLE IF EXISTS `t_house__amenity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `t_house__amenity` (
-  `f_id_house` bigint NOT NULL,
-  `f_id_amenity` bigint NOT NULL,
+  `f_house_id` bigint NOT NULL,
+  `f_amenity_id` bigint NOT NULL,
   `f_created_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`f_id_house`,`f_id_amenity`),
-  KEY `fk_house__amenity_amenity_idx` (`f_id_amenity`),
-  KEY `fk_house__amenity_house_idx` (`f_id_house`),
-  CONSTRAINT `fk_house__amenity_amenity` FOREIGN KEY (`f_id_amenity`) REFERENCES `t_amenity` (`f_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `fk_house__amenity_house` FOREIGN KEY (`f_id_house`) REFERENCES `t_house` (`f_id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  PRIMARY KEY (`f_house_id`,`f_amenity_id`),
+  KEY `fk_house__amenity_amenity_idx` (`f_amenity_id`),
+  KEY `fk_house__amenity_house_idx` (`f_house_id`),
+  CONSTRAINT `fk_house__amenity_amenity` FOREIGN KEY (`f_amenity_id`) REFERENCES `t_amenity` (`f_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_house__amenity_house` FOREIGN KEY (`f_house_id`) REFERENCES `t_house` (`f_id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_house__amenity`
---
-
-LOCK TABLES `t_house__amenity` WRITE;
-/*!40000 ALTER TABLE `t_house__amenity` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_house__amenity` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `t_house__constraint`
@@ -187,15 +142,6 @@ CREATE TABLE `t_house__constraint` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_house__constraint`
---
-
-LOCK TABLES `t_house__constraint` WRITE;
-/*!40000 ALTER TABLE `t_house__constraint` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_house__constraint` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `t_house__service`
 --
 
@@ -214,15 +160,6 @@ CREATE TABLE `t_house__service` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_house__service`
---
-
-LOCK TABLES `t_house__service` WRITE;
-/*!40000 ALTER TABLE `t_house__service` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_house__service` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `t_message`
 --
 
@@ -233,8 +170,7 @@ CREATE TABLE `t_message` (
   `f_id` bigint NOT NULL AUTO_INCREMENT,
   `f_source_user_id` bigint NOT NULL,
   `f_target_user_id` bigint NOT NULL,
-  `f_type` int NOT NULL DEFAULT '0' COMMENT '0=unset; 1=text',
-  `f_is_readed` tinyint NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
+  `f_is_read` tinyint NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
   `f_content` varchar(500) NOT NULL DEFAULT '',
   `f_created_time` datetime DEFAULT NULL,
   `f_last_updated_time` datetime DEFAULT NULL,
@@ -245,15 +181,6 @@ CREATE TABLE `t_message` (
   CONSTRAINT `fk_message_user_target` FOREIGN KEY (`f_target_user_id`) REFERENCES `t_user` (`f_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_message`
---
-
-LOCK TABLES `t_message` WRITE;
-/*!40000 ALTER TABLE `t_message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_message` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `t_service`
@@ -269,17 +196,8 @@ CREATE TABLE `t_service` (
   `f_created_time` datetime DEFAULT NULL,
   `f_last_updated_time` datetime DEFAULT NULL,
   PRIMARY KEY (`f_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_service`
---
-
-LOCK TABLES `t_service` WRITE;
-/*!40000 ALTER TABLE `t_service` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_service` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `t_user`
@@ -297,18 +215,8 @@ CREATE TABLE `t_user` (
   `f_last_updated_time` datetime DEFAULT NULL,
   PRIMARY KEY (`f_id`),
   UNIQUE KEY `username_UNIQUE` (`f_user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_user`
---
-
-LOCK TABLES `t_user` WRITE;
-/*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
-INSERT INTO `t_user` VALUES (1,'aaa','pass',2,'2021-05-03 16:34:58',NULL),(3,'aaaaa','pass1',2,'2021-05-03 18:17:55',NULL),(4,'bbb','pass2',2,'2021-05-03 18:17:55',NULL),(6,'summerday','123456',1,'2021-05-03 18:23:00',NULL),(7,'asdasd','123456',2,'2021-05-03 18:25:04','2021-05-03 18:30:48'),(11,'test1','123123',2,'2021-05-04 01:13:19','2021-05-04 01:13:19');
-/*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `t_userdtl`
@@ -334,17 +242,8 @@ CREATE TABLE `t_userdtl` (
   PRIMARY KEY (`f_id`),
   KEY `fk_userdtl_user_idx` (`f_user_id`),
   CONSTRAINT `fk_userdtl_user` FOREIGN KEY (`f_user_id`) REFERENCES `t_user` (`f_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_userdtl`
---
-
-LOCK TABLES `t_userdtl` WRITE;
-/*!40000 ALTER TABLE `t_userdtl` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_userdtl` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -355,4 +254,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-04 20:20:53
+-- Dump completed on 2021-05-24 21:45:40
