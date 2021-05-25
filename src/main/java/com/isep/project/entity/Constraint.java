@@ -33,7 +33,7 @@ public class Constraint extends BaseEntity implements Serializable
     @Column(name = "f_detail", nullable = false)
     private String detail = "";
 
-    @ManyToMany(mappedBy = "constraints", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "constraints", fetch = FetchType.LAZY)
     private Set<House> houses;
 
 }

@@ -58,21 +58,21 @@ public class House extends BaseEntity implements Serializable
     @Column(name = "f_picture")
     private String picture;
 
-    @ManyToMany(targetEntity = Service.class, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Service.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "t_house__service",
             joinColumns = {@JoinColumn(name = "f_house_id", referencedColumnName = "f_id")},
             inverseJoinColumns = {@JoinColumn(name = "f_service_id", referencedColumnName = "f_id")}
     )
     private Set<Service> services;
 
-    @ManyToMany(targetEntity = Amenity.class, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Amenity.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "t_house__amenity",
             joinColumns = {@JoinColumn(name = "f_house_id", referencedColumnName = "f_id")},
             inverseJoinColumns = {@JoinColumn(name = "f_amenity_id", referencedColumnName = "f_id")}
     )
     private Set<Amenity> amenities;
 
-    @ManyToMany(targetEntity = Constraint.class, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Constraint.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "t_house__constraint",
             joinColumns = {@JoinColumn(name = "f_house_id", referencedColumnName = "f_id")},
             inverseJoinColumns = {

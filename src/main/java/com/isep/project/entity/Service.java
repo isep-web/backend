@@ -33,7 +33,7 @@ public class Service extends BaseEntity implements Serializable
     @Column(name = "f_detail", nullable = false)
     private String detail = "";
 
-    @ManyToMany(mappedBy = "services", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
     private Set<House> houses;
 
 }

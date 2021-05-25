@@ -10,7 +10,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * @version : 1.0.0
  * @date : 2021/5/5
  */
-@RepositoryRestResource(exported = false)
 public interface ConstraintRepository extends JpaRepository<Constraint, Long>,
         JpaSpecificationExecutor<Constraint>
 {
