@@ -1,6 +1,6 @@
 package com.isep.project.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,12 +8,12 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * @author : Xuan MIAO
- * @version : 1.0.0
- * @date : 2021/5/5
+ * @author Xuan MIAO
  */
 @Data
 @Entity
@@ -23,20 +23,45 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class User extends BaseEntity implements Serializable
 {
 
-    private static final long serialVersionUID = 8741446885207941178L;
+    private static final long serialVersionUID = -182216524554701152L;
 
     @Column(name = "f_user_name", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String userName;
 
     @Column(name = "f_password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /**
      * 0=unset/1=user/2=admin
      */
     @Column(name = "f_role", nullable = false)
-    @Schema(allowableValues = {"0",
-                               "1"}, description = "0=unset/1=user/2=admin", defaultValue = "0")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer role = 0;
+
+    @Column(name = "f_display_name", nullable = false)
+    private String displayName = "";
+
+    @Column(name = "f_email", nullable = false)
+    private String email = "";
+
+    @Column(name = "f_phone", nullable = false)
+    private String phone = "";
+
+    @Column(name = "f_gender", nullable = false)
+    private String gender = "";
+
+    @Column(name = "f_language", nullable = false)
+    private String language = "";
+
+    @Column(name = "f_description", nullable = false)
+    private String description = "";
+
+    @Column(name = "f_icon", nullable = false)
+    private String icon = "";
+
+    @Column(name = "f_location")
+    private String location;
 
 }
