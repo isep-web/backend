@@ -21,7 +21,7 @@ public class SpringDataRestCustomization implements RepositoryRestConfigurer
 
         cors.addMapping("/**")
                 .allowedOrigins("http://localhost:8080")
-                .allowedMethods("*")
+                .allowedMethods("GET","PUT","POST","PATCH","DELETE")
                 .allowedHeaders("*")
 //              .exposedHeaders("header1", "header2")
                 .allowCredentials(false)
