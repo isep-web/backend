@@ -2,14 +2,17 @@ package com.isep.project.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Data
 @Entity
 @Table(name = "t_house")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "applications")
 @EntityListeners(AuditingEntityListener.class)
 public class House extends BaseEntity implements Serializable
 {
@@ -72,11 +75,15 @@ public class House extends BaseEntity implements Serializable
     )
     private Set<Amenity> amenities;
 
-    @ManyToMany(targetEntity = Constraint.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(targetEntity = Constraint.class, cascade = {CascadeType.PERSIST,
+                                                            CascadeType.REFRESH})
     @JoinTable(name = "t_house__constraint",
             joinColumns = {@JoinColumn(name = "f_house_id", referencedColumnName = "f_id")},
             inverseJoinColumns = {
                     @JoinColumn(name = "f_constraint_id", referencedColumnName = "f_id")}
     )
     private Set<Constraint> constraints;
+
+    @OneToMany(mappedBy = "house", fetch = FetchType.LAZY)
+    private List<Application> applications;
 }

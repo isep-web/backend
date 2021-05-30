@@ -2,14 +2,15 @@ package com.isep.project.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
@@ -18,7 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Data
 @Entity
 @Table(name = "t_user")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"sentApplications", "receivedApplications"})
 @EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity implements Serializable
 {
@@ -63,5 +64,11 @@ public class User extends BaseEntity implements Serializable
 
     @Column(name = "f_location")
     private String location;
+
+    @OneToMany(mappedBy = "sourceUser", fetch = FetchType.LAZY)
+    private List<Application> sentApplications;
+
+    @OneToMany(mappedBy = "targetUser", fetch = FetchType.LAZY)
+    private List<Application> receivedApplications;
 
 }

@@ -6,9 +6,12 @@ import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.tomcat.jni.Library;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
@@ -26,15 +29,6 @@ public class Application extends BaseEntity implements Serializable
 
     private static final long serialVersionUID = -1076269535680923985L;
 
-    @Column(name = "f_source_user_id", nullable = false)
-    private Long sourceUserId;
-
-    @Column(name = "f_target_user_id", nullable = false)
-    private Long targetUserId;
-
-    @Column(name = "f_house_id", nullable = false)
-    private Long houseId;
-
     /**
      * 0=no/1=yes
      */
@@ -51,4 +45,15 @@ public class Application extends BaseEntity implements Serializable
     @Column(name = "f_guest_number", nullable = false)
     private Integer guestNumber = 0;
 
+    @ManyToOne
+    @JoinColumn(name="f_source_user_id")
+    private User sourceUser;
+
+    @ManyToOne
+    @JoinColumn(name="f_target_user_id")
+    private User targetUser;
+
+    @ManyToOne
+    @JoinColumn(name="f_house_id")
+    private House house;
 }
