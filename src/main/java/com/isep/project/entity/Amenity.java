@@ -1,5 +1,6 @@
 package com.isep.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
@@ -33,6 +34,7 @@ public class Amenity extends BaseEntity implements Serializable
     @Column(name = "f_detail", nullable = false)
     private String detail = "";
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToMany(mappedBy = "amenities", fetch = FetchType.LAZY)
     private Set<House> houses;
 }

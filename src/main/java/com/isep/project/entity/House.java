@@ -1,5 +1,6 @@
 package com.isep.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.List;
@@ -85,5 +86,6 @@ public class House extends BaseEntity implements Serializable
     private Set<Constraint> constraints;
 
     @OneToMany(mappedBy = "house", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Application> applications;
 }

@@ -225,7 +225,7 @@ CREATE TABLE `t_house__service` (
 
 LOCK TABLES `t_house__service` WRITE;
 /*!40000 ALTER TABLE `t_house__service` DISABLE KEYS */;
-INSERT INTO `t_house__service` VALUES (1,1,NULL),(1,2,NULL),(2,1,NULL),(3,2,NULL),(3,3,NULL);
+INSERT INTO `t_house__service` VALUES (1,1,NULL),(1,2,NULL),(1,3,NULL),(1,4,NULL),(2,1,NULL),(2,2,NULL),(2,3,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL);
 /*!40000 ALTER TABLE `t_house__service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +275,7 @@ CREATE TABLE `t_service` (
   `f_created_time` datetime DEFAULT NULL,
   `f_last_updated_time` datetime DEFAULT NULL,
   PRIMARY KEY (`f_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -284,7 +284,7 @@ CREATE TABLE `t_service` (
 
 LOCK TABLES `t_service` WRITE;
 /*!40000 ALTER TABLE `t_service` DISABLE KEYS */;
-INSERT INTO `t_service` VALUES (1,'service1','detail1','2021-05-30 23:30:46','2021-05-30 23:30:46'),(2,'service2','detail2','2021-05-30 23:31:01','2021-05-30 23:31:01'),(3,'service3','detail3','2021-05-30 23:31:06','2021-05-30 23:31:06');
+INSERT INTO `t_service` VALUES (1,'service1','detail1','2021-05-30 23:30:46','2021-05-30 23:30:46'),(2,'service2','detail2','2021-05-30 23:31:01','2021-05-30 23:31:01'),(3,'service3','detail3','2021-05-30 23:31:06','2021-05-30 23:31:06'),(4,'service4','detail4','2021-05-30 23:31:06','2021-05-30 23:31:06'),(5,'service5','detail5','2021-05-30 23:31:06','2021-05-30 23:31:06');
 /*!40000 ALTER TABLE `t_service` ENABLE KEYS */;
 UNLOCK TABLES;
 

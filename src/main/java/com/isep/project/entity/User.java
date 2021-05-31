@@ -66,9 +66,11 @@ public class User extends BaseEntity implements Serializable
     private String location;
 
     @OneToMany(mappedBy = "sourceUser", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Application> sentApplications;
 
     @OneToMany(mappedBy = "targetUser", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Application> receivedApplications;
 
 }
