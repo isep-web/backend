@@ -34,4 +34,14 @@ public interface HouseRepository extends JpaRepository<House, Long>, JpaSpecific
             @Param("amenitiesNum") Long amenitiesNum,
             Pageable page);
 
+    @RestResource(exported = false)
+    @Query(value = "SELECT DISTINCT(h.id) FROM House h"
+            + " WHERE((:areaMin is null OR :areaMax is null OR :areaMin='' OR :areaMax='') "
+            + "OR h.area BETWEEN :areaMin AND :areaMax ) "
+            + "AND (:title is null OR :title='' OR h.title like CONCAT('%',:title,'%'))"
+            + "AND (:guestNumber is null OR :guestNumber='' OR h.guestNumber >=:guestNumber)")
+    List<Long> advSearchWithoutAnemities(@Param("areaMin") String areaMin,
+            @Param("areaMax") String areaMax, @Param("title") String title,
+            @Param("guestNumber") String guestNumber, Pageable page);
+
 }

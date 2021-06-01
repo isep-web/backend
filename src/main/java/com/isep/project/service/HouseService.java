@@ -1,6 +1,5 @@
 package com.isep.project.service;
 
-import com.isep.project.entity.House;
 import com.isep.project.repository.HouseRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,13 @@ public class HouseService
         }
         return houseRepository
                 .advSearch(areaMin, areaMax, title, guestNumber, amenitiesLong,
-                        (long) amenitiesLong.size(),
-                        page);
+                        (long) amenitiesLong.size(), page);
+    }
+
+    public List<Long> advancedSearchWithoutAmenities(String areaMin, String areaMax, String title,
+            String guestNumber, Pageable page)
+    {
+        return houseRepository
+                .advSearchWithoutAnemities(areaMin, areaMax, title, guestNumber, page);
     }
 }
