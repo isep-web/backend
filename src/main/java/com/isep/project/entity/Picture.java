@@ -1,30 +1,39 @@
 package com.isep.project.entity;
 
-import java.util.Date;
+import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.EntityListeners;
+import javax.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * @author Xuan MIAO
+ */
+@Data
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-public class File {
+@Table(name = "t_picture")
+@EqualsAndHashCode(callSuper = true)
+@EntityListeners(AuditingEntityListener.class)
+public class Picture extends BaseEntity implements Serializable
+{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String name;
-	private Date created = new Date();
-	private String summary;
+    private static final long serialVersionUID = -9057574425621950191L;
 
-	@ContentId private String contentId;
-	@ContentLength private long contentLength;
-	private String mimeType = "text/plain";
+    @ContentId
+    @Column(name = "f_content_id")
+    private String contentId;
+
+    @ContentLength
+    @Column(name = "f_content_length")
+    private long contentLength;
+
+    @Column(name = "f_mime_type", nullable = false)
+    private String mimeType = "text/plain";
+
+
 }
