@@ -3,11 +3,13 @@ package com.isep.project.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -67,10 +69,14 @@ public class User extends BaseEntity implements Serializable
 
     @OneToMany(mappedBy = "sourceUser", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Application> sentApplications;
+    private Set<Application> sentApplications;
 
     @OneToMany(mappedBy = "targetUser", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Application> receivedApplications;
+    private Set<Application> receivedApplications;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Picture avatar;
 
 }
