@@ -10,6 +10,9 @@ spring:
         show-sql: true  #日志中显示sql语句
     application:
         name: backend
+    content:
+        fs:
+            filesystem-root: "/pictures/backend/"
 #springdoc:
 #    swagger-ui:
 #        # 自定义的文档界面访问路径。默认访问路径是/swagger-ui.html
