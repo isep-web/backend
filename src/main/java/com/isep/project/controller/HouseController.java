@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ public class HouseController
     @Resource
     private HouseService houseService;
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/advancedSearch")
     public List<Long> advancedSearch(
             @Parameter(description = "Search for houses with an area larger than or equal to the "
@@ -41,6 +43,11 @@ public class HouseController
             @RequestParam(value = "amenities", required = false, defaultValue = "") String amenities,
             Pageable page)
     {
+        if ("".equals(amenities) || amenities == null)
+        {
+            return houseService
+                    .advancedSearchWithoutAmenities(areaMin, areaMax, title, guestNumber, page);
+        }
         return houseService.advancedSearch(areaMin, areaMax, title, guestNumber, amenities, page);
     }
 
