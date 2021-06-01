@@ -1,12 +1,11 @@
 package com.isep.project.controller;
 
-import com.isep.project.FileContentStore;
-import com.isep.project.entity.File;
-import com.isep.project.repository.FileRepository;
+import com.isep.project.PictureContentStore;
+import com.isep.project.entity.Picture;
+import com.isep.project.repository.PictureRepository;
 import java.io.IOException;
 import java.util.Optional;
 import javax.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,19 +19,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/pictures")
-public class FileContentController {
+public class PictureContentController
+{
 
 	@Resource
-	private FileRepository filesRepo;
+	private PictureRepository filesRepo;
 
 	@Resource
-	private FileContentStore contentStore;
+	private PictureContentStore contentStore;
 	
 	@RequestMapping(value="/{pictureId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> setContent(@PathVariable("pictureId") Long id, @RequestParam("file") MultipartFile file)
 			throws IOException {
 
-		Optional<File> f = filesRepo.findById(id);
+		Optional<Picture> f = filesRepo.findById(id);
 		if (f.isPresent()) {
 			f.get().setMimeType(file.getContentType());
 
@@ -49,7 +49,7 @@ public class FileContentController {
 	@RequestMapping(value="/{pictureId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getContent(@PathVariable("pictureId") Long id) {
 
-		Optional<File> f = filesRepo.findById(id);
+		Optional<Picture> f = filesRepo.findById(id);
 		if (f.isPresent()) {
 			InputStreamResource inputStreamResource = new InputStreamResource(contentStore.getContent(f.get()));
 			HttpHeaders headers = new HttpHeaders();

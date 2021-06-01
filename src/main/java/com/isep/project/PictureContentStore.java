@@ -1,7 +1,7 @@
 package com.isep.project;
 
-import com.isep.project.entity.File;
+import com.isep.project.entity.Picture;
 import org.springframework.content.commons.repository.ContentStore;
 
-public interface FileContentStore extends ContentStore<File, String> {
+public interface PictureContentStore extends ContentStore<Picture, String> {
 }
