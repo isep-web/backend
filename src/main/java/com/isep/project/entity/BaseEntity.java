@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,6 +18,7 @@ import org.springframework.data.annotation.LastModifiedDate;
  * @version : 1.0.0
  * @date : 2021/5/5
  */
+@Getter
 @MappedSuperclass
 @JsonIgnoreProperties({"createdTime", "lastUpdatedTime"})
 public class BaseEntity

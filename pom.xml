@@ -103,13 +103,13 @@
         <dependency>
             <groupId>com.github.paulcwarren</groupId>
             <artifactId>spring-content-fs-boot-starter</artifactId>
-            <version>1.2.5-SNAPSHOT</version>
+            <version>1.2.4</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.github.paulcwarren</groupId>-->
-<!--            <artifactId>spring-content-rest-boot-starter</artifactId>-->
-<!--            <version>1.2.5-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.github.paulcwarren</groupId>
+            <artifactId>spring-content-rest-boot-starter</artifactId>
+            <version>1.2.4</version>
+        </dependency>
     </dependencies>
 
     <build>

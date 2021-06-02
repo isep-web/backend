@@ -90,5 +90,5 @@ public class House extends BaseEntity implements Serializable
 
     @OneToMany(mappedBy = "house", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Set<Picture> photos;
+    private Set<com.isep.project.entity.File> photos;
 }
