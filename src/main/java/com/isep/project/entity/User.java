@@ -2,7 +2,6 @@ package com.isep.project.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,6 +76,6 @@ public class User extends BaseEntity implements Serializable
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Picture avatar;
+    private com.isep.project.entity.File avatar;
 
 }
