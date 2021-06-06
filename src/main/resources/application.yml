@@ -13,6 +13,10 @@ spring:
     content:
         fs:
             filesystem-root: "/pictures/backend/"
+    servlet:
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 100MB
 #springdoc:
 #    swagger-ui:
 #        # 自定义的文档界面访问路径。默认访问路径是/swagger-ui.html
