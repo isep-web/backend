@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * @author : Xuan MIAO
- * @version : 2.0.0
+ * @version : 3.0.0
  * @date : 2021/5/18
  */
 @Data
@@ -90,5 +90,5 @@ public class House extends BaseEntity implements Serializable
 
     @OneToMany(mappedBy = "house", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Set<com.isep.project.entity.File> photos;
+    private Set<Picture> photos;
 }
