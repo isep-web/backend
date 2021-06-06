@@ -15,7 +15,9 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * @author Xuan MIAO
+ * @author : Xuan MIAO
+ * @version : 3.0.0
+ * @date : 2021/5/18
  */
 @Data
 @Entity
@@ -76,6 +78,6 @@ public class User extends BaseEntity implements Serializable
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private com.isep.project.entity.File avatar;
+    private Picture avatar;
 
 }
