@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
  * @author Xuan MIAO
  */
 @CrossOrigin
-@StoreRestResource(path = "pictures", linkRel = "pictures")
+@StoreRestResource(path = "pictures", linkRel = "content")
 public interface PictureStoreRepository extends ContentStore<Picture, String>
 {
 }

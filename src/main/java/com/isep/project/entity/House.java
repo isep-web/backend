@@ -3,6 +3,7 @@ package com.isep.project.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Data
 @Entity
 @Table(name = "t_house")
-@EqualsAndHashCode(callSuper = true, exclude = "applications")
+@EqualsAndHashCode(callSuper = true, exclude = {"applications","photos"})
 @EntityListeners(AuditingEntityListener.class)
 public class House extends BaseEntity implements Serializable
 {

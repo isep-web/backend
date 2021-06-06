@@ -22,7 +22,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Data
 @Entity
 @Table(name = "t_user")
-@EqualsAndHashCode(callSuper = true, exclude = {"sentApplications", "receivedApplications"})
+@EqualsAndHashCode(callSuper = true, exclude = {"sentApplications", "receivedApplications",
+                                                "avatar"})
 @EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity implements Serializable
 {
