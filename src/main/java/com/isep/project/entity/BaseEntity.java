@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 /**
@@ -21,6 +23,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Getter
 @MappedSuperclass
 @JsonIgnoreProperties({"createdTime", "lastUpdatedTime"})
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity
 {
 

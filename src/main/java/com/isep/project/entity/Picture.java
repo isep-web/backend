@@ -25,7 +25,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "t_picture")
 @EqualsAndHashCode(callSuper = true)
-@EntityListeners(AuditingEntityListener.class)
 public class Picture extends BaseEntity implements Serializable
 {
 

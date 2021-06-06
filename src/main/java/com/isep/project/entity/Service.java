@@ -22,7 +22,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "t_service")
 @EqualsAndHashCode(callSuper = true, exclude = "houses")
-@EntityListeners(AuditingEntityListener.class)
 public class Service extends BaseEntity implements Serializable
 {
 

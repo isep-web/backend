@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "t_amenity")
 @EqualsAndHashCode(callSuper = true, exclude = "houses")
-@EntityListeners(AuditingEntityListener.class)
+
 public class Amenity extends BaseEntity implements Serializable
 {
 

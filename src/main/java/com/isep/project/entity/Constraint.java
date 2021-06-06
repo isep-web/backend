@@ -22,7 +22,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "t_constraint")
 @EqualsAndHashCode(callSuper = true, exclude = "houses")
-@EntityListeners(AuditingEntityListener.class)
 public class Constraint extends BaseEntity implements Serializable
 {
 
