@@ -3,12 +3,10 @@ package com.isep.project.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -17,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * @author : Xuan MIAO
@@ -27,7 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Data
 @Entity
 @Table(name = "t_house")
-@EqualsAndHashCode(callSuper = true, exclude = {"applications","photos"})
+@EqualsAndHashCode(callSuper = true, exclude = {"applications", "photos"})
 public class House extends BaseEntity implements Serializable
 {
 
@@ -50,16 +47,13 @@ public class House extends BaseEntity implements Serializable
      */
     @Schema(allowableValues = {"0", "1"}, description = "0=no/1=yes", defaultValue = "0")
     @Column(name = "is_published", nullable = false)
-    private Boolean published = Boolean.FALSE;
+    private Integer published = 1;
 
     @Column(name = "f_guest_number", nullable = false)
     private Integer guestNumber = 0;
 
     @Column(name = "f_location")
     private String location;
-
-    @Column(name = "f_picture")
-    private String picture;
 
     @ManyToMany(targetEntity = Service.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "t_house__service",

@@ -14,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 public class SpringDataRestCustomization implements RepositoryRestConfigurer
 {
 
+    private static final long MAX_AGE_SECS = 3600;
+
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config,
             CorsRegistry cors)
@@ -21,10 +23,8 @@ public class SpringDataRestCustomization implements RepositoryRestConfigurer
 
         cors.addMapping("/**")
                 .allowedOrigins("http://localhost:8080")
-                .allowedMethods("GET","PUT","POST","PATCH","DELETE")
-                .allowedHeaders("*")
-//              .exposedHeaders("header1", "header2")
+                .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
                 .allowCredentials(false)
-                .maxAge(3600);
+                .maxAge(MAX_AGE_SECS);
     }
 }

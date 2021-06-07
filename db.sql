@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS web /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS web /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE web;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
@@ -71,19 +71,19 @@ CREATE TABLE t_application
     f_source_user_id    bigint  NOT NULL,
     f_target_user_id    bigint  NOT NULL,
     f_house_id          bigint  NOT NULL,
-    f_is_accepted       tinyint NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
+    f_is_accepted       int NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
     f_start_date        date             DEFAULT NULL,
     f_end_date          date             DEFAULT NULL,
-    f_guest_number      tinyint NOT NULL DEFAULT '0',
+    f_guest_number      int NOT NULL DEFAULT '0',
     f_created_time      datetime         DEFAULT NULL,
     f_last_updated_time datetime         DEFAULT NULL,
     PRIMARY KEY (f_id),
     KEY fk_app_user_source_idx (f_source_user_id),
     KEY fk_app_user_target_idx (f_target_user_id),
     KEY fk_app_house_idx (f_house_id),
-    CONSTRAINT fk_app_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_app_user_source FOREIGN KEY (f_source_user_id) REFERENCES t_user (f_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_app_user_target FOREIGN KEY (f_target_user_id) REFERENCES t_user (f_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_app_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_app_user_source FOREIGN KEY (f_source_user_id) REFERENCES t_user (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_app_user_target FOREIGN KEY (f_target_user_id) REFERENCES t_user (f_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4
@@ -152,15 +152,15 @@ CREATE TABLE t_house
     f_user_id           bigint                                                        NOT NULL,
     f_title             varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
     f_area              int                                                           NOT NULL DEFAULT '0',
-    f_location          json                                                                   DEFAULT NULL,
+    f_location          varchar(255)                                                                   DEFAULT NULL,
     f_description       varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-    is_published        tinyint                                                       NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
-    f_guest_number      tinyint                                                       NOT NULL DEFAULT '0',
+    is_published        int                                                       NOT NULL DEFAULT '1' COMMENT '0=no/1=yes',
+    f_guest_number      int                                                       NOT NULL DEFAULT '0',
     f_created_time      datetime                                                               DEFAULT NULL,
     f_last_updated_time datetime                                                               DEFAULT NULL,
     PRIMARY KEY (f_id),
     KEY fk_house_user_idx (f_user_id),
-    CONSTRAINT fk_house_user FOREIGN KEY (f_user_id) REFERENCES t_user (f_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_house_user FOREIGN KEY (f_user_id) REFERENCES t_user (f_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8mb4
@@ -200,8 +200,8 @@ CREATE TABLE t_house__amenity
     PRIMARY KEY (f_house_id, f_amenity_id),
     KEY fk_house__amenity_amenity_idx (f_amenity_id),
     KEY fk_house__amenity_house_idx (f_house_id),
-    CONSTRAINT fk_house__amenity_amenity FOREIGN KEY (f_amenity_id) REFERENCES t_amenity (f_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_house__amenity_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_house__amenity_amenity FOREIGN KEY (f_amenity_id) REFERENCES t_amenity (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_house__amenity_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -239,8 +239,8 @@ CREATE TABLE t_house__constraint
     f_created_time  datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (f_house_id, f_constraint_id),
     KEY fk_house__constraint_constraint_idx (f_constraint_id),
-    CONSTRAINT fk_house__constraint_constraint FOREIGN KEY (f_constraint_id) REFERENCES t_constraint (f_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_house__constraint_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_house__constraint_constraint FOREIGN KEY (f_constraint_id) REFERENCES t_constraint (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_house__constraint_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -277,8 +277,8 @@ CREATE TABLE t_house__service
     f_created_time datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (f_house_id, f_service_id),
     KEY fk_house__service_service_idx (f_service_id),
-    CONSTRAINT fk_house__service_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_house__service_service FOREIGN KEY (f_service_id) REFERENCES t_service (f_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_house__service_service FOREIGN KEY (f_service_id) REFERENCES t_service (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_house__service_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -318,7 +318,7 @@ CREATE TABLE t_message
     f_id                bigint                                                        NOT NULL AUTO_INCREMENT,
     f_source_user_id    bigint                                                        NOT NULL,
     f_target_user_id    bigint                                                        NOT NULL,
-    f_is_read           tinyint                                                       NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
+    f_is_read           int                                                       NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
     f_content           varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
     f_created_time      datetime                                                               DEFAULT NULL,
     f_last_updated_time datetime                                                               DEFAULT NULL,
@@ -344,6 +344,56 @@ LOCK TABLES t_message WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_permission`
+--
+
+DROP TABLE IF EXISTS t_permission;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE t_permission
+(
+    f_id                bigint      NOT NULL AUTO_INCREMENT,
+    f_name              varchar(60) NOT NULL,
+    f_url               varchar(500) DEFAULT NULL,
+    f_type              int  NOT NULL COMMENT '1=page/2=button',
+    f_permission        varchar(50)  DEFAULT NULL,
+    f_method            varchar(20)  DEFAULT NULL,
+    f_sort              varchar(45) NOT NULL,
+    f_parent_id         bigint      NOT NULL,
+    f_created_time      datetime     DEFAULT NULL,
+    f_last_updated_time datetime     DEFAULT NULL,
+    PRIMARY KEY (f_id)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 7
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_permission`
+--
+
+LOCK TABLES t_permission WRITE;
+/*!40000 ALTER TABLE t_permission
+    DISABLE KEYS */;
+INSERT INTO t_permission
+VALUES (1, '测试页面', '/users', 1, 'page:users', 'GET', '1', 0, '2021-06-07 22:07:07',
+        '2021-06-07 22:07:07'),
+       (2, '测试页面-查询', '/users/**', 2, 'btn:users:query', 'GET', '1', 1, '2021-06-07 22:07:07',
+        '2021-06-07 22:07:07'),
+       (3, '测试页面-添加', '/**/test', 2, 'btn:test:insert', 'POST', '2', 1, '2021-06-07 22:07:07',
+        '2021-06-07 22:07:07'),
+       (4, '监控在线用户页面', '/houses', 1, 'page:houses', NULL, '2', 0, '2021-06-07 22:07:07',
+        '2021-06-07 22:07:07'),
+       (5, '在线用户页面-查询', '/**/api/monitor/online/user', 2, 'btn:monitor:online:query', 'GET', '1', 4,
+        '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (6, '在线用户页面-踢出', '/**/api/monitor/online/user/kickout', 2, 'btn:monitor:online:kickout',
+        'DELETE', '2', 4, '2021-06-07 22:07:07', '2021-06-07 22:07:07');
+/*!40000 ALTER TABLE t_permission
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_picture`
 --
 
@@ -356,7 +406,7 @@ CREATE TABLE t_picture
     f_content_id        varchar(100)         DEFAULT NULL,
     f_content_length    bigint               DEFAULT NULL,
     f_mime_type         varchar(45) NOT NULL DEFAULT 'text/plain',
-    f_type              tinyint(1)           DEFAULT '1' COMMENT '0=avatar/1=house_photo',
+    f_type              int(1)           DEFAULT '1' COMMENT '0=avatar/1=house_photo',
     f_house_id          bigint               DEFAULT NULL,
     f_user_id           bigint               DEFAULT NULL,
     f_created_time      datetime             DEFAULT NULL,
@@ -364,13 +414,103 @@ CREATE TABLE t_picture
     PRIMARY KEY (f_id),
     KEY fk_picture_house_idx (f_house_id),
     KEY fk_picture_user_idx (f_user_id),
-    CONSTRAINT fk_picture_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_picture_user FOREIGN KEY (f_user_id) REFERENCES t_user (f_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_picture_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_picture_user FOREIGN KEY (f_user_id) REFERENCES t_user (f_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `t_picture`
+--
+
+LOCK TABLES t_picture WRITE;
+/*!40000 ALTER TABLE t_picture
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE t_picture
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_role`
+--
+
+DROP TABLE IF EXISTS t_role;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE t_role
+(
+    f_id                bigint      NOT NULL AUTO_INCREMENT,
+    f_name              varchar(60) NOT NULL,
+    f_description       varchar(200) DEFAULT NULL,
+    f_created_time      datetime     DEFAULT NULL,
+    f_last_updated_time datetime     DEFAULT NULL,
+    PRIMARY KEY (f_id)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 3
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_role`
+--
+
+LOCK TABLES t_role WRITE;
+/*!40000 ALTER TABLE t_role
+    DISABLE KEYS */;
+INSERT INTO t_role
+VALUES (1, 'admin', 'administrator', '2021-06-07 22:05:31', '2021-06-07 22:05:31'),
+       (2, 'user', 'normal user', '2021-06-07 22:05:31', '2021-06-07 22:05:31');
+/*!40000 ALTER TABLE t_role
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_role__permission`
+--
+
+DROP TABLE IF EXISTS t_role__permission;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE t_role__permission
+(
+    f_role_id       bigint NOT NULL,
+    f_permission_id bigint NOT NULL,
+    f_created_time  datetime DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (f_role_id, f_permission_id),
+    KEY fk_role__permission_permission_id_idx (f_permission_id),
+    CONSTRAINT fk_role__permission_permission_id FOREIGN KEY (f_permission_id) REFERENCES t_permission (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_role__permission_role_id FOREIGN KEY (f_role_id) REFERENCES t_role (f_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_role__permission`
+--
+
+LOCK TABLES t_role__permission WRITE;
+/*!40000 ALTER TABLE t_role__permission
+    DISABLE KEYS */;
+INSERT INTO t_role__permission
+VALUES (1, 1, '2021-06-07 22:07:12'),
+       (1, 2, '2021-06-07 22:07:12'),
+       (1, 3, '2021-06-07 22:07:12'),
+       (1, 4, '2021-06-07 22:07:12'),
+       (1, 5, '2021-06-07 22:07:12'),
+       (1, 6, '2021-06-07 22:07:12'),
+       (2, 1, '2021-06-07 22:07:12'),
+       (2, 2, '2021-06-07 22:07:12');
+/*!40000 ALTER TABLE t_role__permission
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_service`
+--
 
 DROP TABLE IF EXISTS t_service;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -415,20 +555,22 @@ DROP TABLE IF EXISTS t_user;
 CREATE TABLE t_user
 (
     f_id                bigint                                                        NOT NULL AUTO_INCREMENT,
-    f_user_name         varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
+    f_username          varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
     f_password          varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
-    f_role              tinyint                                                       NOT NULL DEFAULT '0' COMMENT '0=unset/1=user/2=admin',
+    f_status            int                                                    NOT NULL DEFAULT '1' COMMENT '0=banned/1=normal',
     f_display_name      varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '',
     f_email             varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '',
     f_phone             varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '',
-    f_gender            varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '',
+    f_sex               int                                                    NOT NULL DEFAULT '0' COMMENT '0=unset/1=male/2=female',
     f_language          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
     f_description       varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-    f_location          json                                                                   DEFAULT NULL,
+    f_location          varchar(255)                                                                   DEFAULT NULL,
     f_created_time      datetime                                                               DEFAULT NULL,
     f_last_updated_time datetime                                                               DEFAULT NULL,
     PRIMARY KEY (f_id),
-    UNIQUE KEY username_unique (f_user_name)
+    UNIQUE KEY username_unique (f_username),
+    UNIQUE KEY f_email_unique (f_email),
+    UNIQUE KEY f_phone_unique (f_phone)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4
@@ -443,11 +585,46 @@ LOCK TABLES t_user WRITE;
 /*!40000 ALTER TABLE t_user
     DISABLE KEYS */;
 INSERT INTO t_user
-VALUES (1, 'user1', 'password1', 0, 'user_display1', 'user1@gmail.com', '12312312312', 'male',
+VALUES (1, 'admin', '$2a$10$adUzNRkdHzAFVGeQRWv3SeOXOIYJ0./h1J2.kDVasUatzLNOUspC2', 1, 'admin_display', 'admin@mail.com', '12312312312', 1,
         'english', 'description1', NULL, '2021-05-30 23:20:43', '2021-05-30 23:20:43'),
-       (2, 'user2', 'password2', 1, 'user_display2', 'user2@gmail.com', '32132132132', 'female',
+       (2, 'user', '$2a$10$Gc.qjF3ryza7hlcByiSK5uW9DeIrcGBd.bkINwCFMQfmuKo6QVreq', 1, 'user_display', 'user@mail.com', '32132132132', 2,
         'french', 'description2', NULL, '2021-05-30 23:21:19', '2021-05-30 23:21:19');
 /*!40000 ALTER TABLE t_user
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_user__role`
+--
+
+DROP TABLE IF EXISTS t_user__role;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE t_user__role
+(
+    f_user_id      bigint NOT NULL,
+    f_role_id      bigint NOT NULL,
+    f_created_time datetime DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (f_user_id, f_role_id),
+    KEY fk_user__role_role_id_idx (f_role_id),
+    CONSTRAINT fk_user__role_role_id FOREIGN KEY (f_role_id) REFERENCES t_role (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_user__role_user_id FOREIGN KEY (f_user_id) REFERENCES t_user (f_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_user__role`
+--
+
+LOCK TABLES t_user__role WRITE;
+/*!40000 ALTER TABLE t_user__role
+    DISABLE KEYS */;
+INSERT INTO t_user__role
+VALUES (1, 1, '2021-06-07 22:10:51'),
+       (2, 2, '2021-06-07 22:10:51');
+/*!40000 ALTER TABLE t_user__role
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @old_time_zone */;
@@ -460,4 +637,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @old_collation_connection */;
 /*!40111 SET SQL_NOTES = @old_sql_notes */;
 
--- Dump completed on 2021-06-06 18:04:05
+-- Dump completed on 2021-06-07 22:17:10

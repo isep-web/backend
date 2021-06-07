@@ -5,14 +5,11 @@ import java.io.Serializable;
 import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.tomcat.jni.Library;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * @author : Xuan MIAO
@@ -32,7 +29,7 @@ public class Application extends BaseEntity implements Serializable
      * 0=no/1=yes
      */
     @Schema(allowableValues = {"0", "1"}, description = "0=no/1=yes", defaultValue = "0")
-    @Column(name = "f_is_accepted", nullable = false)
+    @Column(name = "f_is_accepted", nullable = false, columnDefinition = "TINYINT(1)")
     private Integer accepted = 0;
 
     @Column(name = "f_start_date")
@@ -45,14 +42,14 @@ public class Application extends BaseEntity implements Serializable
     private Integer guestNumber = 0;
 
     @ManyToOne
-    @JoinColumn(name="f_source_user_id")
+    @JoinColumn(name = "f_source_user_id")
     private User sourceUser;
 
     @ManyToOne
-    @JoinColumn(name="f_target_user_id")
+    @JoinColumn(name = "f_target_user_id")
     private User targetUser;
 
     @ManyToOne
-    @JoinColumn(name="f_house_id")
+    @JoinColumn(name = "f_house_id")
     private House house;
 }
