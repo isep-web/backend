@@ -2,7 +2,7 @@ package com.isep.project.controller;
 
 import com.isep.project.common.ApiResponse;
 import com.isep.project.common.Status;
-import com.isep.project.exception.SecurityException;
+import com.isep.project.exception.SecurityRuntimeException;
 import com.isep.project.payload.LoginRequest;
 import com.isep.project.util.JwtUtil;
 import com.isep.project.vo.JwtResponse;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/")
 public class AuthController
 {
 
@@ -43,7 +43,7 @@ public class AuthController
     /**
      * 登录
      */
-    @PostMapping("/login")
+    @PostMapping("/auth")
     public ApiResponse login(@Valid @RequestBody LoginRequest loginRequest)
     {
         Authentication authentication = authenticationManager.authenticate(
@@ -53,20 +53,20 @@ public class AuthController
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtUtil.createJWT(authentication, loginRequest.getRememberMe());
-        return ApiResponse.ofSuccess(new JwtResponse(jwt));
+        return new ApiResponse(Status.SUCCESS, new JwtResponse(jwt));
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/auth")
     public ApiResponse logout(HttpServletRequest request)
     {
         try
         {
             // 设置JWT过期
             jwtUtil.invalidateJWT(request);
-        } catch (SecurityException e)
+        } catch (SecurityRuntimeException e)
         {
-            throw new SecurityException(Status.UNAUTHORIZED);
+            throw new SecurityRuntimeException(Status.UNAUTHORIZED);
         }
-        return ApiResponse.ofStatus(Status.LOGOUT);
+        return new ApiResponse(Status.LOGOUT, null);
     }
 }

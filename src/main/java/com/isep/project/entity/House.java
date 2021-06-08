@@ -1,5 +1,6 @@
 package com.isep.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author : Xuan MIAO
@@ -62,6 +64,7 @@ public class House extends BaseEntity implements Serializable
     )
     private Set<Service> services;
 
+    @JsonBackReference
     @ManyToMany(targetEntity = Amenity.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "t_house__amenity",
             joinColumns = {@JoinColumn(name = "f_house_id", referencedColumnName = "f_id")},

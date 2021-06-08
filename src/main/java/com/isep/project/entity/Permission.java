@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "t_permission")
 @EqualsAndHashCode(callSuper = true)
-public class Permission extends BaseEntity implements Serializable,Cloneable
+public class Permission extends BaseEntity implements Serializable, Cloneable
 {
 
 
@@ -49,11 +49,12 @@ public class Permission extends BaseEntity implements Serializable,Cloneable
 //    private Set<Role> roles;
 
     @Override
-    public Object clone(){
+    public Object clone()
+    {
         Permission p = null;
         try
         {
-            p=(Permission) super.clone();
+            p = (Permission) super.clone();
         } catch (CloneNotSupportedException e)
         {
             e.printStackTrace();

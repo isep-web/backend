@@ -24,7 +24,6 @@ public class HouseController
     @Resource
     private HouseService houseService;
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/advancedSearch")
     public List<Long> advancedSearch(
             @Parameter(description = "Search for houses with an area larger than or equal to the "

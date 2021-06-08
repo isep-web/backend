@@ -20,6 +20,10 @@ public interface HouseRepository extends JpaRepository<House, Long>, JpaSpecific
     List<House> findByUserId(@Param("id") Long id);
 
     @RestResource(exported = false)
+    @Query(value = "select h from House h where h.id = :id")
+    House selectById(@Param("id") Long id);
+
+    @RestResource(exported = false)
     @Query(value = "SELECT DISTINCT(h.id) FROM House h"
             + " WHERE((:areaMin is null OR :areaMax is null OR :areaMin='' OR :areaMax='') "
             + "OR h.area BETWEEN :areaMin AND :areaMax ) "

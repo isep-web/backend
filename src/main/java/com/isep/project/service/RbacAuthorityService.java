@@ -7,11 +7,14 @@ import com.google.common.collect.Multimap;
 import com.isep.project.common.Status;
 import com.isep.project.entity.Permission;
 import com.isep.project.entity.Role;
-import com.isep.project.exception.SecurityException;
+import com.isep.project.exception.SecurityRuntimeException;
+import com.isep.project.repository.ApplicationRepository;
+import com.isep.project.repository.HouseRepository;
 import com.isep.project.repository.PermissionRepository;
 import com.isep.project.repository.RoleRepository;
 import com.isep.project.vo.UserPrincipal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +51,14 @@ public class RbacAuthorityService
             .newArrayList("HEAD", "OPTIONS", "GET", "POST");
     private static final List<String> CURD = Lists
             .newArrayList("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE");
+    /**
+     * Roles that can edit resources not owned to them
+     */
+    private static final List<String> ADMIN = Lists.newArrayList("admin");
+    /**
+     * Methods ignored during resource owner checks
+     */
+    private static final List<String> METHOD_IGNORE = Lists.newArrayList("GET", "POST");
 
     @Resource
     private RoleRepository roleRepository;
@@ -57,6 +68,12 @@ public class RbacAuthorityService
 
     @Resource
     private RequestMappingHandlerMapping mapping;
+
+    @Resource
+    private HouseRepository houseRepository;
+
+    @Resource
+    private ApplicationRepository applicationRepository;
 
     public boolean hasPermission(HttpServletRequest request, Authentication authentication)
     {
@@ -76,8 +93,6 @@ public class RbacAuthorityService
 
             //获取资源，前后端分离，所以过滤页面权限，只保留按钮权限
             List<Permission> perms = permissions.stream()
-                    // 过滤页面权限
-//                    .filter(permission -> Objects.equals(permission.getType(), Consts.BUTTON))
                     // 过滤 URL 为空
                     .filter(permission -> StrUtil.isNotBlank(permission.getUrl()))
                     // 过滤 METHOD 为空
@@ -111,6 +126,7 @@ public class RbacAuthorityService
                 }
 
             }
+            log.debug(String.valueOf(permsAll));
 
             for (Permission perm : permsAll)
             {
@@ -121,6 +137,42 @@ public class RbacAuthorityService
                     hasPermission = true;
                     break;
                 }
+            }
+
+            if (Collections.disjoint(principal.getRoles(), ADMIN) && !METHOD_IGNORE
+                    .contains(request.getMethod()))
+            {
+                Long id = principal.getId();
+                List<Long> owner = Lists.newArrayList();
+                String uri = request.getRequestURI();
+                log.debug("URI: " + uri);
+                String[] uris = uri.split("/");
+                log.debug("URIS: " + Arrays.toString(uris));
+                if (uris.length > 2)
+                {
+                    switch (uris[1])
+                    {
+                        case "users":
+                            owner.add(Long.valueOf(uris[2]));
+                            break;
+                        case "houses":
+                            owner.add(houseRepository.selectById(Long.valueOf(uris[2])).getUserId());
+                            break;
+                        case "applications":
+                            owner.add(applicationRepository.selectById(Long.valueOf(uris[2]))
+                                    .getSourceUser().getId());
+                            break;
+                        default:
+                            owner.add(Long.valueOf(uris[2]));
+                            break;
+                    }
+                }
+                log.debug("Owner:" + owner);
+                if (!owner.contains(id))
+                {
+                    hasPermission = false;
+                }
+
             }
 
             return hasPermission;
@@ -155,7 +207,7 @@ public class RbacAuthorityService
             {
                 if (!urlMapping.get(uri).contains(currentMethod))
                 {
-                    throw new SecurityException(Status.HTTP_BAD_METHOD);
+                    throw new SecurityRuntimeException(Status.HTTP_BAD_METHOD);
                 } else
                 {
                     return;
@@ -163,7 +215,7 @@ public class RbacAuthorityService
             }
         }
 
-        throw new SecurityException(Status.REQUEST_NOT_FOUND);
+        throw new SecurityRuntimeException(Status.REQUEST_NOT_FOUND);
     }
 
     /**

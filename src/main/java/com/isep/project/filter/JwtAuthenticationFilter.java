@@ -1,11 +1,12 @@
-package com.isep.project.config;
+package com.isep.project.filter;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import com.isep.project.common.Status;
-import com.isep.project.exception.SecurityException;
+import com.isep.project.config.IgnoreConfig;
+import com.isep.project.exception.SecurityRuntimeException;
 import com.isep.project.service.CustomUserDetailsService;
 import com.isep.project.util.JwtUtil;
 import com.isep.project.util.ResponseUtil;
@@ -28,15 +29,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * <p>
- * Jwt 认证过滤器
- * </p>
+ * JWT filter
  *
- * @author yangkai.shen
- * @date Created in 2018-12-10 15:15
+ * @author : Xuan MIAO
+ * @version : 1.0.0
+ * @date : 2021/6/5
  */
-@Component
 @Slf4j
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter
 {
 
@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
     private JwtUtil jwtUtil;
 
     @Resource
-    private com.isep.project.config.CustomConfig customConfig;
+    private IgnoreConfig ignoreConfig;
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
             @NotNull FilterChain filterChain) throws ServletException, IOException
     {
 
-        if (checkIgnores(request))
+        if (isIgnored(request))
         {
             filterChain.doFilter(request, response);
             return;
@@ -70,6 +70,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
                 String username = jwtUtil.getUsernameFromJWT(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
@@ -78,7 +79,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
-            } catch (SecurityException e)
+            } catch (SecurityRuntimeException e)
             {
                 ResponseUtil.renderJson(response, e);
             }
@@ -90,12 +91,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
     }
 
     /**
-     * 请求是否不需要进行权限拦截
+     * Check if request is ignored bt Jwt filter
      *
-     * @param request 当前请求
-     * @return true - 忽略，false - 不忽略
+     * @param request request
+     * @return true - ignored，false - not ignored
      */
-    private boolean checkIgnores(HttpServletRequest request)
+    private boolean isIgnored(HttpServletRequest request)
     {
         String method = request.getMethod();
 
@@ -110,34 +111,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
         switch (httpMethod)
         {
             case GET:
-                ignores.addAll(customConfig.getIgnores().getGet());
+                ignores.addAll(ignoreConfig.getGet());
                 break;
             case PUT:
-                ignores.addAll(customConfig.getIgnores().getPut());
+                ignores.addAll(ignoreConfig.getPut());
                 break;
             case HEAD:
-                ignores.addAll(customConfig.getIgnores().getHead());
+                ignores.addAll(ignoreConfig.getHead());
                 break;
             case POST:
-                ignores.addAll(customConfig.getIgnores().getPost());
+                ignores.addAll(ignoreConfig.getPost());
                 break;
             case PATCH:
-                ignores.addAll(customConfig.getIgnores().getPatch());
+                ignores.addAll(ignoreConfig.getPatch());
                 break;
             case TRACE:
-                ignores.addAll(customConfig.getIgnores().getTrace());
+                ignores.addAll(ignoreConfig.getTrace());
                 break;
             case DELETE:
-                ignores.addAll(customConfig.getIgnores().getDelete());
+                ignores.addAll(ignoreConfig.getDelete());
                 break;
             case OPTIONS:
-                ignores.addAll(customConfig.getIgnores().getOptions());
+                ignores.addAll(ignoreConfig.getOptions());
                 break;
             default:
                 break;
         }
 
-        ignores.addAll(customConfig.getIgnores().getPattern());
+        ignores.addAll(ignoreConfig.getPattern());
 
         if (CollUtil.isNotEmpty(ignores))
         {

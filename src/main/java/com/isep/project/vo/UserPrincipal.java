@@ -1,8 +1,6 @@
 package com.isep.project.vo;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.isep.project.common.Consts;
 import com.isep.project.entity.Permission;
 import com.isep.project.entity.Role;
 import com.isep.project.entity.User;
@@ -14,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -97,11 +94,6 @@ public class UserPrincipal implements UserDetails
     {
         List<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toList());
 
-//        List<GrantedAuthority> authorities = permissions.stream()
-//                .filter(permission -> StrUtil.isNotBlank(permission.getPermission()))
-//                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-//                .collect(Collectors.toList());
-
         return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(),
                 user.getDisplayName(), user.getPhone(), user.getEmail(),
                 user.getSex(), user.getStatus(), user.getCreatedTime().getTime(),
@@ -148,6 +140,6 @@ public class UserPrincipal implements UserDetails
     @Override
     public boolean isEnabled()
     {
-        return Objects.equals(this.status, Consts.ENABLE);
+        return Objects.equals(this.status, 1);
     }
 }

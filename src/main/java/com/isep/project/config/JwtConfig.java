@@ -4,12 +4,11 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * <p>
- * JWT 配置
- * </p>
+ * Jwt config
  *
- * @author yangkai.shen
- * @date Created in 2018-12-07 13:42
+ * @author : Xuan MIAO
+ * @version : 2.0.0
+ * @date : 2021/6/8
  */
 @ConfigurationProperties(prefix = "jwt.config")
 @Data
@@ -17,17 +16,22 @@ public class JwtConfig
 {
 
     /**
-     * jwt 加密 key，默认值：jwtKey.
+     * Jwt key, default: jwtKey
      */
     private String key = "jwtKey";
 
     /**
-     * jwt 过期时间，默认值：600000 {@code 10 分钟}.
+     * Jwt expiration time (millisecond), default: 600000 (10 minutes)
      */
     private Long ttl = 600000L;
 
     /**
-     * 开启 记住我 之后 jwt 过期时间，默认值 604800000 {@code 7 天}
+     * Jwt expiration time with remember me (millisecond), default: 604800000 (7 days)
      */
-    private Long remember = 604800000L;
+    private Long rememberTtl = 604800000L;
+
+    /**
+     * Prefix of jwt key redis, default: "jwt:"
+     */
+    private String redisKeyPrefix = "jwt:";
 }

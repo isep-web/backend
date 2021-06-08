@@ -1,5 +1,6 @@
 package com.isep.project.config;
 
+import com.isep.project.filter.JwtAuthenticationFilter;
 import com.isep.project.service.CustomUserDetailsService;
 import javax.annotation.Resource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,12 +28,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties(com.isep.project.config.CustomConfig.class)
+@EnableConfigurationProperties(IgnoreConfig.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
 
     @Resource
-    private com.isep.project.config.CustomConfig customConfig;
+    private IgnoreConfig ignoreConfig;
 
     @Resource
     private AccessDeniedHandler accessDeniedHandler;
@@ -41,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     private CustomUserDetailsService customUserDetailsService;
 
     @Resource
-    private com.isep.project.config.JwtAuthenticationFilter jwtAuthenticationFilter;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public BCryptPasswordEncoder encoder()
@@ -108,39 +109,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         WebSecurity and = web.ignoring().and();
 
         // 忽略 GET
-        customConfig.getIgnores().getGet()
+        ignoreConfig.getGet()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.GET, url));
 
         // 忽略 POST
-        customConfig.getIgnores().getPost()
+        ignoreConfig.getPost()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.POST, url));
 
         // 忽略 DELETE
-        customConfig.getIgnores().getDelete()
+        ignoreConfig.getDelete()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.DELETE, url));
 
         // 忽略 PUT
-        customConfig.getIgnores().getPut()
+        ignoreConfig.getPut()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.PUT, url));
 
         // 忽略 HEAD
-        customConfig.getIgnores().getHead()
+        ignoreConfig.getHead()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.HEAD, url));
 
         // 忽略 PATCH
-        customConfig.getIgnores().getPatch()
+        ignoreConfig.getPatch()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.PATCH, url));
 
         // 忽略 OPTIONS
-        customConfig.getIgnores().getOptions()
+        ignoreConfig.getOptions()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.OPTIONS, url));
 
         // 忽略 TRACE
-        customConfig.getIgnores().getTrace()
+        ignoreConfig.getTrace()
                 .forEach(url -> and.ignoring().antMatchers(HttpMethod.TRACE, url));
 
         // 按照请求格式忽略
-        customConfig.getIgnores().getPattern().forEach(url -> and.ignoring().antMatchers(url));
+        ignoreConfig.getPattern().forEach(url -> and.ignoring().antMatchers(url));
 
     }
 }

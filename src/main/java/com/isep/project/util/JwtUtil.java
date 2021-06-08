@@ -2,10 +2,9 @@ package com.isep.project.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.isep.project.common.Consts;
 import com.isep.project.common.Status;
 import com.isep.project.config.JwtConfig;
-import com.isep.project.exception.SecurityException;
+import com.isep.project.exception.SecurityRuntimeException;
 import com.isep.project.vo.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -54,21 +53,21 @@ public class JwtUtil
      *
      * @param rememberMe  记住我
      * @param id          用户id
-     * @param subject     用户名
+     * @param username     用户名
      * @param roles       用户角色
      * @param authorities 用户权限
      * @return JWT
      */
-    public String createJWT(Boolean rememberMe, Long id, String subject, List<String> roles,
+    public String createJWT(Boolean rememberMe, Long id, String username, List<String> roles,
             Collection<? extends GrantedAuthority> authorities)
     {
         Date now = new Date();
-        JwtBuilder builder = Jwts.builder().setId(id.toString()).setSubject(subject)
+        JwtBuilder builder = Jwts.builder().setId(id.toString()).setSubject(username)
                 .setIssuedAt(now).signWith(SignatureAlgorithm.HS256, jwtConfig.getKey())
                 .claim("roles", roles).claim("authorities", authorities);
 
         // 设置过期时间
-        Long ttl = rememberMe ? jwtConfig.getRemember() : jwtConfig.getTtl();
+        Long ttl = rememberMe ? jwtConfig.getRememberTtl() : jwtConfig.getTtl();
         if (ttl > 0)
         {
             builder.setExpiration(DateUtil.offsetMillisecond(now, ttl.intValue()));
@@ -77,7 +76,7 @@ public class JwtUtil
         String jwt = builder.compact();
         // 将生成的JWT保存至Redis
         stringRedisTemplate.opsForValue()
-                .set(Consts.REDIS_JWT_KEY_PREFIX + subject, jwt, ttl, TimeUnit.MILLISECONDS);
+                .set(jwtConfig.getRedisKeyPrefix() + username, jwt, ttl, TimeUnit.MILLISECONDS);
         return jwt;
     }
 
@@ -109,42 +108,42 @@ public class JwtUtil
                     .getBody();
 
             String username = claims.getSubject();
-            String redisKey = Consts.REDIS_JWT_KEY_PREFIX + username;
+            String redisKey = jwtConfig.getRedisKeyPrefix() + username;
 
             // 校验redis中的JWT是否存在
             Long expire = stringRedisTemplate.getExpire(redisKey, TimeUnit.MILLISECONDS);
             if (Objects.isNull(expire) || expire <= 0)
             {
-                throw new SecurityException(Status.TOKEN_EXPIRED);
+                throw new SecurityRuntimeException(Status.TOKEN_EXPIRED);
             }
 
             // 校验redis中的JWT是否与当前的一致，不一致则代表用户已注销/用户在不同设备登录，均代表JWT已过期
             String redisToken = stringRedisTemplate.opsForValue().get(redisKey);
             if (!StrUtil.equals(jwt, redisToken))
             {
-                throw new SecurityException(Status.TOKEN_OUT_OF_CTRL);
+                throw new SecurityRuntimeException(Status.TOKEN_OUT_OF_CTRL);
             }
             return claims;
         } catch (ExpiredJwtException e)
         {
             log.error("Token 已过期");
-            throw new SecurityException(Status.TOKEN_EXPIRED);
+            throw new SecurityRuntimeException(Status.TOKEN_EXPIRED);
         } catch (UnsupportedJwtException e)
         {
             log.error("不支持的 Token");
-            throw new SecurityException(Status.TOKEN_PARSE_ERROR);
+            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
         } catch (MalformedJwtException e)
         {
             log.error("Token 无效");
-            throw new SecurityException(Status.TOKEN_PARSE_ERROR);
+            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
         } catch (SignatureException e)
         {
             log.error("无效的 Token 签名");
-            throw new SecurityException(Status.TOKEN_PARSE_ERROR);
+            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
         } catch (IllegalArgumentException e)
         {
             log.error("Token 参数不存在");
-            throw new SecurityException(Status.TOKEN_PARSE_ERROR);
+            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
         }
     }
 
@@ -158,7 +157,7 @@ public class JwtUtil
         String jwt = getJwtFromRequest(request);
         String username = getUsernameFromJWT(jwt);
         // 从redis中清除JWT
-        stringRedisTemplate.delete(Consts.REDIS_JWT_KEY_PREFIX + username);
+        stringRedisTemplate.delete(jwtConfig.getRedisKeyPrefix() + username);
     }
 
     /**

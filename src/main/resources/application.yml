@@ -20,11 +20,11 @@ spring:
         multipart:
             max-file-size: 100MB
             max-request-size: 100MB
-#    web:
-#        resources:
-#            add-mappings: false
-#    mvc:
-#        throw-exception-if-no-handler-found: true
+    web:
+        resources:
+            add-mappings: false
+    mvc:
+        throw-exception-if-no-handler-found: true
     redis:
         host: localhost
         port: 6379
@@ -97,15 +97,17 @@ logging:
 server:
     port: 17698
 debug: false
+
 custom:
-    config:
-        ignores:
-            # 需要过滤的 post 请求
-            post:
-                - "/auth/login"
-            # 需要过滤的请求，不限方法
-            get:
-                - "/v3/**"
-                - "/swagger-ui.html"
-                - "/swagger-ui/**"
-                - "profile/**"
+    ignores:
+        pattern:
+            - "/**"
+        post:
+            - "/auth"
+            - "/users"
+        get:
+            - "/v3/**"
+            - "/swagger-ui.html"
+            - "/swagger-ui/**"
+            - "profile/**"
+            - "/aa"
