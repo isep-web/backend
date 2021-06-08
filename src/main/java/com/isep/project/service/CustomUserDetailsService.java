@@ -47,6 +47,9 @@ public class CustomUserDetailsService implements UserDetailsService
         List<Role> roles = roleRepository.selectByUserId(user.getId());
         List<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
         List<Permission> permissions = permissionRepository.selectByRoleIdList(roleIds);
+        user.setReceivedApplications(null);
+        user.setSentApplications(null);
+        user.setAvatar(null);
         return UserPrincipal.create(user, roles, permissions);
     }
 }

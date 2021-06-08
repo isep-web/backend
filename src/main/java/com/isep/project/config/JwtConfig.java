@@ -17,9 +17,9 @@ public class JwtConfig
 {
 
     /**
-     * jwt 加密 key，默认值：xkcoding.
+     * jwt 加密 key，默认值：jwtKey.
      */
-    private String key = "xkcoding";
+    private String key = "jwtKey";
 
     /**
      * jwt 过期时间，默认值：600000 {@code 10 分钟}.

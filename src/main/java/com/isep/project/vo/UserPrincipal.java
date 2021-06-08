@@ -97,16 +97,16 @@ public class UserPrincipal implements UserDetails
     {
         List<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toList());
 
-        List<GrantedAuthority> authorities = permissions.stream()
-                .filter(permission -> StrUtil.isNotBlank(permission.getPermission()))
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toList());
+//        List<GrantedAuthority> authorities = permissions.stream()
+//                .filter(permission -> StrUtil.isNotBlank(permission.getPermission()))
+//                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+//                .collect(Collectors.toList());
 
         return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(),
                 user.getDisplayName(), user.getPhone(), user.getEmail(),
                 user.getSex(), user.getStatus(), user.getCreatedTime().getTime(),
                 user.getLastUpdatedTime().getTime(),
-                roleNames, authorities);
+                roleNames, null);
     }
 
     @Override

@@ -1,9 +1,9 @@
-package com.isep.project.config;
+package com.isep.project.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.isep.project.common.Consts;
 import com.isep.project.common.Status;
 import com.isep.project.entity.Permission;
 import com.isep.project.entity.Role;
@@ -11,9 +11,10 @@ import com.isep.project.exception.SecurityException;
 import com.isep.project.repository.PermissionRepository;
 import com.isep.project.repository.RoleRepository;
 import com.isep.project.vo.UserPrincipal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -41,6 +42,13 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 public class RbacAuthorityService
 {
 
+    private static final List<String> R = Lists
+            .newArrayList("HEAD", "OPTIONS", "GET");
+    private static final List<String> CR = Lists
+            .newArrayList("HEAD", "OPTIONS", "GET", "POST");
+    private static final List<String> CURD = Lists
+            .newArrayList("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE");
+
     @Resource
     private RoleRepository roleRepository;
 
@@ -67,7 +75,7 @@ public class RbacAuthorityService
             List<Permission> permissions = permissionRepository.selectByRoleIdList(roleIds);
 
             //获取资源，前后端分离，所以过滤页面权限，只保留按钮权限
-            List<Permission> btnPerms = permissions.stream()
+            List<Permission> perms = permissions.stream()
                     // 过滤页面权限
 //                    .filter(permission -> Objects.equals(permission.getType(), Consts.BUTTON))
                     // 过滤 URL 为空
@@ -76,10 +84,38 @@ public class RbacAuthorityService
                     .filter(permission -> StrUtil.isNotBlank(permission.getMethod()))
                     .collect(Collectors.toList());
 
-            for (Permission btnPerm : btnPerms)
+            List<Permission> permsAll = new ArrayList<>();
+            List<String> methods;
+            for (Permission perm : perms)
             {
-                AntPathRequestMatcher antPathMatcher = new AntPathRequestMatcher(btnPerm.getUrl(),
-                        btnPerm.getMethod());
+                switch (perm.getMethod())
+                {
+                    case "R":
+                        methods = R;
+                        break;
+                    case "CR":
+                        methods = CR;
+                        break;
+                    case "CURD":
+                        methods = CURD;
+                        break;
+                    default:
+                        methods = Collections.singletonList(perm.getMethod());
+                }
+
+                for (String method : methods)
+                {
+                    Permission p = (Permission) perm.clone();
+                    p.setMethod(method);
+                    permsAll.add(p);
+                }
+
+            }
+
+            for (Permission perm : permsAll)
+            {
+                AntPathRequestMatcher antPathMatcher = new AntPathRequestMatcher(perm.getUrl(),
+                        perm.getMethod());
                 if (antPathMatcher.matches(request))
                 {
                     hasPermission = true;
@@ -154,9 +190,17 @@ public class RbacAuthorityService
                     method.getMethods().stream().map(Enum::toString).collect(Collectors.toList())));
         });
 
-        urlMapping.put("/users","GET");
-        urlMapping.put("/users/**","GET");
-        urlMapping.put("/houses","GET");
+        urlMapping.put("/amenities", "GET");
+        urlMapping.putAll("/applications", CR);
+        urlMapping.putAll("/applications/*/**", CURD);
+        urlMapping.put("/constraints", "GET");
+        urlMapping.putAll("/houses", CR);
+        urlMapping.putAll("/houses/*/**", CURD);
+        urlMapping.putAll("/pictures", CR);
+        urlMapping.putAll("/pictures/*/**", CURD);
+        urlMapping.put("/services", "GET");
+        urlMapping.putAll("/users", CR);
+        urlMapping.putAll("/users/*/**", CURD);
 
         return urlMapping;
     }

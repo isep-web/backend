@@ -102,8 +102,10 @@ custom:
         ignores:
             # 需要过滤的 post 请求
             post:
-                - "/api/auth/login"
-                - "/api/auth/logout"
+                - "/auth/login"
             # 需要过滤的请求，不限方法
-            pattern:
-                - "/test/*"
+            get:
+                - "/v3/**"
+                - "/swagger-ui.html"
+                - "/swagger-ui/**"
+                - "profile/**"

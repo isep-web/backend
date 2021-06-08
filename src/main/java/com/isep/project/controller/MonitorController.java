@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/monitor")
+@RequestMapping("/monitor")
 public class MonitorController
 {
 
@@ -41,7 +41,7 @@ public class MonitorController
      *
      * @param pageCondition 分页参数
      */
-    @GetMapping("/online/user")
+    @GetMapping("/")
     public ApiResponse onlineUser(PageCondition pageCondition)
     {
         PageUtil.checkPageCondition(pageCondition, PageCondition.class);
@@ -54,7 +54,7 @@ public class MonitorController
      *
      * @param names 用户名列表
      */
-    @DeleteMapping("/online/user/kickout")
+    @DeleteMapping("/")
     public ApiResponse kickoutOnlineUser(@RequestBody List<String> names)
     {
         log.error(String.valueOf(names));

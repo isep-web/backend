@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>
 {
@@ -17,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
      * @param phone    手机号
      * @return 用户信息
      */
+    @RestResource(exported = false)
     Optional<User> findByUsernameOrEmailOrPhone(String username, String email, String phone);
 
     /**
@@ -25,5 +27,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
      * @param usernameList 用户名列表
      * @return 用户列表
      */
+    @RestResource(exported = false)
     List<User> findByUsernameIn(List<String> usernameList);
 }

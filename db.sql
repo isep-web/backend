@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS web /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS web /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE web;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
@@ -67,16 +67,16 @@ DROP TABLE IF EXISTS t_application;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE t_application
 (
-    f_id                bigint  NOT NULL AUTO_INCREMENT,
-    f_source_user_id    bigint  NOT NULL,
-    f_target_user_id    bigint  NOT NULL,
-    f_house_id          bigint  NOT NULL,
-    f_is_accepted       int NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
-    f_start_date        date             DEFAULT NULL,
-    f_end_date          date             DEFAULT NULL,
-    f_guest_number      int NOT NULL DEFAULT '0',
-    f_created_time      datetime         DEFAULT NULL,
-    f_last_updated_time datetime         DEFAULT NULL,
+    f_id                bigint NOT NULL AUTO_INCREMENT,
+    f_source_user_id    bigint NOT NULL,
+    f_target_user_id    bigint NOT NULL,
+    f_house_id          bigint NOT NULL,
+    f_is_accepted       int    NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
+    f_start_date        date            DEFAULT NULL,
+    f_end_date          date            DEFAULT NULL,
+    f_guest_number      int    NOT NULL DEFAULT '0',
+    f_created_time      datetime        DEFAULT NULL,
+    f_last_updated_time datetime        DEFAULT NULL,
     PRIMARY KEY (f_id),
     KEY fk_app_user_source_idx (f_source_user_id),
     KEY fk_app_user_target_idx (f_target_user_id),
@@ -152,10 +152,10 @@ CREATE TABLE t_house
     f_user_id           bigint                                                        NOT NULL,
     f_title             varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
     f_area              int                                                           NOT NULL DEFAULT '0',
-    f_location          varchar(255)                                                                   DEFAULT NULL,
+    f_location          varchar(255) COLLATE utf8mb4_general_ci                                DEFAULT NULL,
     f_description       varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-    is_published        int                                                       NOT NULL DEFAULT '1' COMMENT '0=no/1=yes',
-    f_guest_number      int                                                       NOT NULL DEFAULT '0',
+    is_published        int                                                           NOT NULL DEFAULT '1' COMMENT '0=no/1=yes',
+    f_guest_number      int                                                           NOT NULL DEFAULT '0',
     f_created_time      datetime                                                               DEFAULT NULL,
     f_last_updated_time datetime                                                               DEFAULT NULL,
     PRIMARY KEY (f_id),
@@ -277,8 +277,8 @@ CREATE TABLE t_house__service
     f_created_time datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (f_house_id, f_service_id),
     KEY fk_house__service_service_idx (f_service_id),
-    CONSTRAINT fk_house__service_service FOREIGN KEY (f_service_id) REFERENCES t_service (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_house__service_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_house__service_house FOREIGN KEY (f_house_id) REFERENCES t_house (f_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_house__service_service FOREIGN KEY (f_service_id) REFERENCES t_service (f_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -318,7 +318,7 @@ CREATE TABLE t_message
     f_id                bigint                                                        NOT NULL AUTO_INCREMENT,
     f_source_user_id    bigint                                                        NOT NULL,
     f_target_user_id    bigint                                                        NOT NULL,
-    f_is_read           int                                                       NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
+    f_is_read           int                                                           NOT NULL DEFAULT '0' COMMENT '0=no/1=yes',
     f_content           varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
     f_created_time      datetime                                                               DEFAULT NULL,
     f_last_updated_time datetime                                                               DEFAULT NULL,
@@ -352,19 +352,15 @@ DROP TABLE IF EXISTS t_permission;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE t_permission
 (
-    f_id                bigint      NOT NULL AUTO_INCREMENT,
-    f_name              varchar(60) NOT NULL,
-    f_url               varchar(500) DEFAULT NULL,
-    f_type              int  NOT NULL COMMENT '1=page/2=button',
-    f_permission        varchar(50)  DEFAULT NULL,
-    f_method            varchar(20)  DEFAULT NULL,
-    f_sort              varchar(45) NOT NULL,
-    f_parent_id         bigint      NOT NULL,
-    f_created_time      datetime     DEFAULT NULL,
-    f_last_updated_time datetime     DEFAULT NULL,
+    f_id                bigint                                 NOT NULL AUTO_INCREMENT,
+    f_name              varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
+    f_url               varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    f_method            varchar(20) COLLATE utf8mb4_general_ci  DEFAULT NULL,
+    f_created_time      datetime                                DEFAULT NULL,
+    f_last_updated_time datetime                                DEFAULT NULL,
     PRIMARY KEY (f_id)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 7
+  AUTO_INCREMENT = 12
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -377,18 +373,19 @@ LOCK TABLES t_permission WRITE;
 /*!40000 ALTER TABLE t_permission
     DISABLE KEYS */;
 INSERT INTO t_permission
-VALUES (1, '测试页面', '/users', 1, 'page:users', 'GET', '1', 0, '2021-06-07 22:07:07',
+VALUES (1, 'amenities r', '/amenities', 'R', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (2, 'applications cr', '/applications', 'CR', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (3, 'applications/id crud', '/applications/*/**', 'CURD', '2021-06-07 22:07:07',
         '2021-06-07 22:07:07'),
-       (2, '测试页面-查询', '/users/**', 2, 'btn:users:query', 'GET', '1', 1, '2021-06-07 22:07:07',
+       (4, 'constraints r', '/constraints', 'R', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (5, 'houses cr', '/houses', 'CR', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (6, 'houses/id crud', '/houses/*/**', 'CURD', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (7, 'picture cr', '/picture', 'CR', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (8, 'picture/id crud', '/picture/*/**', 'CURD', '2021-06-07 22:07:07',
         '2021-06-07 22:07:07'),
-       (3, '测试页面-添加', '/**/test', 2, 'btn:test:insert', 'POST', '2', 1, '2021-06-07 22:07:07',
-        '2021-06-07 22:07:07'),
-       (4, '监控在线用户页面', '/houses', 1, 'page:houses', NULL, '2', 0, '2021-06-07 22:07:07',
-        '2021-06-07 22:07:07'),
-       (5, '在线用户页面-查询', '/**/api/monitor/online/user', 2, 'btn:monitor:online:query', 'GET', '1', 4,
-        '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
-       (6, '在线用户页面-踢出', '/**/api/monitor/online/user/kickout', 2, 'btn:monitor:online:kickout',
-        'DELETE', '2', 4, '2021-06-07 22:07:07', '2021-06-07 22:07:07');
+       (9, 'services r', '/services', 'R', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (10, 'users cr', '/users', 'CR', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (11, 'users/id crud', '/users/*/**', 'CURD', '2021-06-07 22:07:07', '2021-06-07 22:07:07');
 /*!40000 ALTER TABLE t_permission
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -402,15 +399,15 @@ DROP TABLE IF EXISTS t_picture;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE t_picture
 (
-    f_id                bigint      NOT NULL AUTO_INCREMENT,
-    f_content_id        varchar(100)         DEFAULT NULL,
-    f_content_length    bigint               DEFAULT NULL,
-    f_mime_type         varchar(45) NOT NULL DEFAULT 'text/plain',
-    f_type              int(1)           DEFAULT '1' COMMENT '0=avatar/1=house_photo',
-    f_house_id          bigint               DEFAULT NULL,
-    f_user_id           bigint               DEFAULT NULL,
-    f_created_time      datetime             DEFAULT NULL,
-    f_last_updated_time datetime             DEFAULT NULL,
+    f_id                bigint                                 NOT NULL AUTO_INCREMENT,
+    f_content_id        varchar(100) COLLATE utf8mb4_general_ci         DEFAULT NULL,
+    f_content_length    bigint                                          DEFAULT NULL,
+    f_mime_type         varchar(45) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'text/plain',
+    f_type              int                                             DEFAULT '1' COMMENT '0=avatar/1=house_photo',
+    f_house_id          bigint                                          DEFAULT NULL,
+    f_user_id           bigint                                          DEFAULT NULL,
+    f_created_time      datetime                                        DEFAULT NULL,
+    f_last_updated_time datetime                                        DEFAULT NULL,
     PRIMARY KEY (f_id),
     KEY fk_picture_house_idx (f_house_id),
     KEY fk_picture_user_idx (f_user_id),
@@ -441,11 +438,11 @@ DROP TABLE IF EXISTS t_role;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE t_role
 (
-    f_id                bigint      NOT NULL AUTO_INCREMENT,
-    f_name              varchar(60) NOT NULL,
-    f_description       varchar(200) DEFAULT NULL,
-    f_created_time      datetime     DEFAULT NULL,
-    f_last_updated_time datetime     DEFAULT NULL,
+    f_id                bigint                                 NOT NULL AUTO_INCREMENT,
+    f_name              varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
+    f_description       varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    f_created_time      datetime                                DEFAULT NULL,
+    f_last_updated_time datetime                                DEFAULT NULL,
     PRIMARY KEY (f_id)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 3
@@ -502,6 +499,11 @@ VALUES (1, 1, '2021-06-07 22:07:12'),
        (1, 4, '2021-06-07 22:07:12'),
        (1, 5, '2021-06-07 22:07:12'),
        (1, 6, '2021-06-07 22:07:12'),
+       (1, 7, '2021-06-07 22:07:12'),
+       (1, 8, '2021-06-07 22:07:12'),
+       (1, 9, '2021-06-07 22:07:12'),
+       (1, 10, '2021-06-07 22:07:12'),
+       (1, 11, '2021-06-07 22:07:12'),
        (2, 1, '2021-06-07 22:07:12'),
        (2, 2, '2021-06-07 22:07:12');
 /*!40000 ALTER TABLE t_role__permission
@@ -557,14 +559,14 @@ CREATE TABLE t_user
     f_id                bigint                                                        NOT NULL AUTO_INCREMENT,
     f_username          varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
     f_password          varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
-    f_status            int                                                    NOT NULL DEFAULT '1' COMMENT '0=banned/1=normal',
+    f_status            int                                                           NOT NULL DEFAULT '1' COMMENT '0=banned/1=normal',
     f_display_name      varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '',
     f_email             varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '',
     f_phone             varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '',
-    f_sex               int                                                    NOT NULL DEFAULT '0' COMMENT '0=unset/1=male/2=female',
+    f_sex               int                                                           NOT NULL DEFAULT '0' COMMENT '0=unset/1=male/2=female',
     f_language          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
     f_description       varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-    f_location          varchar(255)                                                                   DEFAULT NULL,
+    f_location          varchar(255) COLLATE utf8mb4_general_ci                                DEFAULT NULL,
     f_created_time      datetime                                                               DEFAULT NULL,
     f_last_updated_time datetime                                                               DEFAULT NULL,
     PRIMARY KEY (f_id),
@@ -585,10 +587,12 @@ LOCK TABLES t_user WRITE;
 /*!40000 ALTER TABLE t_user
     DISABLE KEYS */;
 INSERT INTO t_user
-VALUES (1, 'admin', '$2a$10$adUzNRkdHzAFVGeQRWv3SeOXOIYJ0./h1J2.kDVasUatzLNOUspC2', 1, 'admin_display', 'admin@mail.com', '12312312312', 1,
-        'english', 'description1', NULL, '2021-05-30 23:20:43', '2021-05-30 23:20:43'),
-       (2, 'user', '$2a$10$Gc.qjF3ryza7hlcByiSK5uW9DeIrcGBd.bkINwCFMQfmuKo6QVreq', 1, 'user_display', 'user@mail.com', '32132132132', 2,
-        'french', 'description2', NULL, '2021-05-30 23:21:19', '2021-05-30 23:21:19');
+VALUES (1, 'admin', '$2a$10$adUzNRkdHzAFVGeQRWv3SeOXOIYJ0./h1J2.kDVasUatzLNOUspC2', 1,
+        'admin_display', 'admin@mail.com', '12312312312', 1, 'english', 'description1', NULL,
+        '2021-05-30 23:20:43', '2021-05-30 23:20:43'),
+       (2, 'user', '$2a$10$Gc.qjF3ryza7hlcByiSK5uW9DeIrcGBd.bkINwCFMQfmuKo6QVreq', 1,
+        'user_display', 'user@mail.com', '32132132132', 2, 'french', 'description2', NULL,
+        '2021-05-30 23:21:19', '2021-05-30 23:21:19');
 /*!40000 ALTER TABLE t_user
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -637,4 +641,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @old_collation_connection */;
 /*!40111 SET SQL_NOTES = @old_sql_notes */;
 
--- Dump completed on 2021-06-07 22:17:10
+-- Dump completed on 2021-06-08 15:08:05

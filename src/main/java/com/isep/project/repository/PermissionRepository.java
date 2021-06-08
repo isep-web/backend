@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  * @author Xuan MIAO
  */
+@RepositoryRestResource(exported = false)
 public interface PermissionRepository extends JpaRepository<Permission, Long>,
         JpaSpecificationExecutor<Permission>
 {

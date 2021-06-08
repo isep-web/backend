@@ -3,13 +3,9 @@ package com.isep.project.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -84,4 +80,20 @@ public class User extends BaseEntity implements Serializable
 //    )
 //    private Set<Role> roles;
 
+//    @Override
+//    public String toString()
+//    {
+//        return "User{" +
+//                "username='" + username + '\'' +
+//                ", password='" + password + '\'' +
+//                ", status=" + status +
+//                ", displayName='" + displayName + '\'' +
+//                ", email='" + email + '\'' +
+//                ", phone='" + phone + '\'' +
+//                ", sex=" + sex +
+//                ", language='" + language + '\'' +
+//                ", description='" + description + '\'' +
+//                ", location='" + location + '\'' +
+//                '}';
+//    }
 }
