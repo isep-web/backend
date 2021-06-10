@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -14,7 +13,6 @@ import lombok.EqualsAndHashCode;
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
 import org.springframework.content.commons.annotations.MimeType;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * @author : Xuan MIAO

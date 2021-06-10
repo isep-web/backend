@@ -1,48 +1,46 @@
 package com.isep.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.NoArgsConstructor;
 
 /**
- * @author : Xuan MIAO
- * @version : 3.0.0
- * @date : 2021/5/18
+ * @author Xuan MIAO
  */
 @Data
 @Entity
 @Table(name = "t_user")
 @EqualsAndHashCode(callSuper = true, exclude = {"sentApplications", "receivedApplications",
                                                 "avatar"})
+@NoArgsConstructor
+@JsonIgnoreProperties({"createdTime", "lastUpdatedTime","username","password"})
 public class User extends BaseEntity implements Serializable
 {
 
-    private static final long serialVersionUID = -182216524554701152L;
 
-    @Column(name = "f_user_name", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String userName;
+    private static final long serialVersionUID = 5780310943968550L;
+
+    @Column(name = "f_username", nullable = false)
+    private String username;
 
     @Column(name = "f_password", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /**
-     * 0=unset/1=user/2=admin
+     * 0=banned/1=normal
      */
-    @Column(name = "f_role", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Integer role = 0;
+    @Column(name = "f_status", nullable = false)
+    private Integer status = 1;
 
     @Column(name = "f_display_name", nullable = false)
     private String displayName = "";
@@ -53,17 +51,14 @@ public class User extends BaseEntity implements Serializable
     @Column(name = "f_phone", nullable = false)
     private String phone = "";
 
-    @Column(name = "f_gender", nullable = false)
-    private String gender = "";
+    @Column(name = "f_sex", nullable = false)
+    private Integer sex = 0;
 
     @Column(name = "f_language", nullable = false)
     private String language = "";
 
     @Column(name = "f_description", nullable = false)
     private String description = "";
-
-    @Column(name = "f_icon", nullable = false)
-    private String icon = "";
 
     @Column(name = "f_location")
     private String location;
@@ -80,4 +75,9 @@ public class User extends BaseEntity implements Serializable
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Picture avatar;
 
+    public User(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+    }
 }

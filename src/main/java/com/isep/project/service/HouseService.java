@@ -20,8 +20,8 @@ public class HouseService
     private HouseRepository houseRepository;
 
     public List<Long> advancedSearch(String areaMin, String areaMax, String title,
-            String guestNumber,
-            String amenities, Pageable page)
+                                     String guestNumber,
+                                     String amenities, Pageable page)
     {
         String[] amenitiesList = amenities.split(",");
         List<Long> amenitiesLong = new ArrayList<>();
@@ -35,7 +35,7 @@ public class HouseService
     }
 
     public List<Long> advancedSearchWithoutAmenities(String areaMin, String areaMax, String title,
-            String guestNumber, Pageable page)
+                                                     String guestNumber, Pageable page)
     {
         return houseRepository
                 .advSearchWithoutAnemities(areaMin, areaMax, title, guestNumber, page);

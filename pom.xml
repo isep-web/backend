@@ -6,8 +6,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.5.0</version>
+        <relativePath/>
     </parent>
     <groupId>com.isep</groupId>
     <artifactId>project</artifactId>
@@ -15,7 +15,15 @@
     <name>project</name>
     <description>backend for web project</description>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <jjwt.version>0.9.1</jjwt.version>
+        <guava.version>29.0-jre</guava.version>
+        <hutool.version>5.4.5</hutool.version>
+        <lombok.version>1.18.20</lombok.version>
     </properties>
     <dependencies>
         <dependency>
@@ -29,10 +37,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-jdbc</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -49,11 +53,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-rest-hal-explorer</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.session</groupId>-->
-<!--            <artifactId>spring-session-core</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -64,42 +63,31 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.restdocs</groupId>-->
-<!--            <artifactId>spring-restdocs-mockmvc</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-security</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.security</groupId>-->
-        <!--            <artifactId>spring-security-test</artifactId>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>6.0.18.Final</version>
         </dependency>
+
+        <!-- ### Swagger ### -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.8</version>
+            <version>1.5.9</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-data-rest</artifactId>
-            <version>1.5.8</version>
+            <version>1.5.9</version>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>1.5.9</version>
+        </dependency>
+        <!-- ### Swagger ### -->
+
+        <!-- ### Content ### -->
         <dependency>
             <groupId>com.github.paulcwarren</groupId>
             <artifactId>spring-content-fs-boot-starter</artifactId>
@@ -110,54 +98,85 @@
             <artifactId>spring-content-rest-boot-starter</artifactId>
             <version>1.2.4</version>
         </dependency>
+        <!-- ### Content ### -->
+
+        <!-- ### Security ### -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!-- Pool for Redis -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <!-- ### Security ### -->
+
+        <!-- ### Tool ### -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ### Tool ### -->
+
+        <!-- ### Test ### -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-test</artifactId>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.security</groupId>-->
+        <!--            <artifactId>spring-security-test</artifactId>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/libs-snapshot</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/libs-snapshot</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.asciidoctor</groupId>-->
-<!--                <artifactId>asciidoctor-maven-plugin</artifactId>-->
-<!--                <version>1.5.8</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>generate-docs</id>-->
-<!--                        <phase>prepare-package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>process-asciidoc</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <backend>html</backend>-->
-<!--                            <doctype>book</doctype>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.springframework.restdocs</groupId>-->
-<!--                        <artifactId>spring-restdocs-asciidoctor</artifactId>-->
-<!--                        <version>${spring-restdocs.version}</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!--fork :  如果没有该项配置，devtools不会起作用，即应用不会restart -->
                     <fork>true</fork>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>snapshots</id>
-            <name>nexus</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
 </project>
