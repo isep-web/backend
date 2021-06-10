@@ -13,6 +13,7 @@ import com.isep.project.repository.HouseRepository;
 import com.isep.project.repository.PermissionRepository;
 import com.isep.project.repository.PictureRepository;
 import com.isep.project.repository.RoleRepository;
+import com.isep.project.repository.UserRepository;
 import com.isep.project.vo.UserPrincipal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +66,9 @@ public class AuthorityService
     private RoleRepository roleRepository;
 
     @Resource
+    private UserRepository userRepository;
+
+    @Resource
     private PermissionRepository permissionRepository;
 
     @Resource
@@ -78,6 +82,9 @@ public class AuthorityService
 
     @Resource
     private PictureRepository pictureRepository;
+
+    @Resource
+    private JwtService jetService;
 
     public boolean hasPermission(HttpServletRequest request, Authentication authentication)
     {
@@ -181,7 +188,10 @@ public class AuthorityService
                                         .getId());
                             }
                         default:
-                            owner.add(Long.valueOf(uris[2]));
+
+                            owner.add(userRepository.selectByName(jetService
+                                    .getUsernameFromJwt(jetService.getJwtFromRequest(request)))
+                                    .getId());
                             break;
                     }
                 }
