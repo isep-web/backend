@@ -8,12 +8,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * @author : Xuan MIAO
  * @version : 2.0.0
  * @date : 2021/5/18
  */
+@CrossOrigin
 public interface HouseRepository extends JpaRepository<House, Long>, JpaSpecificationExecutor<House>
 {
 

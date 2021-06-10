@@ -110,3 +110,5 @@ custom:
             - "profile/**"
         delete:
             - "/auth"
+        options:
+            - "/**"
