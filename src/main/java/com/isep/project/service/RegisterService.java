@@ -4,7 +4,6 @@ import com.isep.project.common.Status;
 import com.isep.project.entity.User;
 import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.repository.UserRepository;
-import com.isep.project.util.JwtUtil;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,18 +22,18 @@ public class RegisterService
     @Resource
     private UserRepository userRepository;
     @Resource
-    private JwtUtil jwtUtil;
+    private JwtService jwtService;
 
     public void changePassword(HttpServletRequest request, String password)
     {
 
         User user = userRepository
-                .findByUsername(jwtUtil.getUsernameFromJWT(jwtUtil.getJwtFromRequest(request)));
+                .findByUsername(jwtService.getUsernameFromJwt(jwtService.getJwtFromRequest(request)));
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);
         try
         {
-            jwtUtil.invalidateJWT(request);
+            jwtService.invalidateJwt(request);
         } catch (JwtRuntimeException e)
         {
             throw new JwtRuntimeException(Status.UNAUTHORIZED);

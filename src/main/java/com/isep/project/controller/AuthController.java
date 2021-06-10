@@ -3,7 +3,7 @@ package com.isep.project.controller;
 import com.isep.project.common.Status;
 import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.payload.LoginRequest;
-import com.isep.project.util.JwtUtil;
+import com.isep.project.service.JwtService;
 import com.isep.project.service.ResponseService;
 import com.isep.project.payload.JwtResponse;
 import javax.annotation.Resource;
@@ -39,7 +39,7 @@ public class AuthController
     private AuthenticationManager authenticationManager;
 
     @Resource
-    private JwtUtil jwtUtil;
+    private JwtService jwtService;
 
     /**
      * 登录
@@ -53,7 +53,7 @@ public class AuthController
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtUtil.createJWT(authentication, loginRequest.getRememberMe());
+        String jwt = jwtService.createJwt(authentication, loginRequest.getRememberMe());
         ResponseService.renderJson(response, Status.SUCCESS, new JwtResponse(jwt));
     }
 
@@ -62,7 +62,7 @@ public class AuthController
     {
         try
         {
-            jwtUtil.invalidateJWT(request);
+            jwtService.invalidateJwt(request);
         } catch (JwtRuntimeException e)
         {
             throw new JwtRuntimeException(Status.UNAUTHORIZED);

@@ -8,7 +8,7 @@ import com.isep.project.common.Status;
 import com.isep.project.config.IgnoreConfig;
 import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.service.CustomUserDetailsService;
-import com.isep.project.util.JwtUtil;
+import com.isep.project.service.JwtService;
 import com.isep.project.service.ResponseService;
 import java.io.IOException;
 import java.util.Set;
@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
     private CustomUserDetailsService customUserDetailsService;
 
     @Resource
-    private JwtUtil jwtUtil;
+    private JwtService jwtService;
 
     @Resource
     private IgnoreConfig ignoreConfig;
@@ -61,13 +61,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
             return;
         }
 
-        String jwt = jwtUtil.getJwtFromRequest(request);
+        String jwt = jwtService.getJwtFromRequest(request);
 
         if (StrUtil.isNotBlank(jwt))
         {
             try
             {
-                String username = jwtUtil.getUsernameFromJWT(jwt);
+                String username = jwtService.getUsernameFromJwt(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
