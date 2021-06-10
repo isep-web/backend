@@ -50,7 +50,7 @@ jwt:
     config:
         key: isepweb
         ttl: 600000
-        remember: 604800000
+        rememberTtl: 604800000
 logging:
     level:
         com.isep.project: debug
@@ -100,8 +100,6 @@ debug: false
 
 custom:
     ignores:
-        pattern:
-            - "/**"
         post:
             - "/auth"
             - "/users"
@@ -110,4 +108,5 @@ custom:
             - "/swagger-ui.html"
             - "/swagger-ui/**"
             - "profile/**"
-            - "/aa"
+        delete:
+            - "/auth"

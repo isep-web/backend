@@ -6,10 +6,10 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import com.isep.project.common.Status;
 import com.isep.project.config.IgnoreConfig;
-import com.isep.project.exception.SecurityRuntimeException;
+import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.service.CustomUserDetailsService;
 import com.isep.project.util.JwtUtil;
-import com.isep.project.util.ResponseUtil;
+import com.isep.project.service.ResponseService;
 import java.io.IOException;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -79,13 +79,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
-            } catch (SecurityRuntimeException e)
+            } catch (JwtRuntimeException e)
             {
-                ResponseUtil.renderJson(response, e);
+                ResponseService.renderJson(response, e.getStatus(),e.getData());
             }
         } else
         {
-            ResponseUtil.renderJson(response, Status.UNAUTHORIZED, null);
+            ResponseService.renderJson(response, Status.UNAUTHORIZED, null);
         }
 
     }

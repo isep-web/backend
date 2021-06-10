@@ -1,4 +1,4 @@
-package com.isep.project.vo;
+package com.isep.project.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

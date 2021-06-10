@@ -1,13 +1,14 @@
 package com.isep.project.controller;
 
-import com.isep.project.common.ApiResponse;
 import com.isep.project.common.Status;
-import com.isep.project.exception.SecurityRuntimeException;
+import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.payload.LoginRequest;
 import com.isep.project.util.JwtUtil;
-import com.isep.project.vo.JwtResponse;
+import com.isep.project.service.ResponseService;
+import com.isep.project.payload.JwtResponse;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +45,7 @@ public class AuthController
      * 登录
      */
     @PostMapping("/auth")
-    public ApiResponse login(@Valid @RequestBody LoginRequest loginRequest)
+    public void login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response)
     {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmailOrPhone(),
@@ -53,20 +54,20 @@ public class AuthController
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtUtil.createJWT(authentication, loginRequest.getRememberMe());
-        return new ApiResponse(Status.SUCCESS, new JwtResponse(jwt));
+        ResponseService.renderJson(response, Status.SUCCESS, new JwtResponse(jwt));
     }
 
     @DeleteMapping("/auth")
-    public ApiResponse logout(HttpServletRequest request)
+    public void logout(HttpServletRequest request, HttpServletResponse response)
     {
         try
         {
-            // 设置JWT过期
             jwtUtil.invalidateJWT(request);
-        } catch (SecurityRuntimeException e)
+        } catch (JwtRuntimeException e)
         {
-            throw new SecurityRuntimeException(Status.UNAUTHORIZED);
+            throw new JwtRuntimeException(Status.UNAUTHORIZED);
         }
-        return new ApiResponse(Status.LOGOUT, null);
+        ResponseService.renderJson(response, Status.LOGOUT, null);
     }
+
 }

@@ -15,79 +15,84 @@ import lombok.Getter;
 public enum Status
 {
     /**
-     * Success！
+     * Success!
      */
-    SUCCESS(200, "Success！"),
+    SUCCESS(200, "Success!"),
 
     /**
-     * Error！
+     * Error!
      */
-    ERROR(500, "Error！"),
+    ERROR(500, "Error!"),
 
     /**
-     * Logout success！
+     * Logout success!
      */
-    LOGOUT(200, "Logout success！"),
+    LOGOUT(200, "Logout success!"),
 
     /**
-     * Please login first！
+     * Please login first!
      */
-    UNAUTHORIZED(401, "Please login first！"),
+    UNAUTHORIZED(401, "Please login first!"),
 
     /**
-     * Access denied！
+     * Access denied!
      */
-    ACCESS_DENIED(403, "Access denied！"),
+    ACCESS_DENIED(403, "Access denied!"),
 
     /**
-     * Request not found！
+     * Request not found!
      */
-    REQUEST_NOT_FOUND(404, "Request not found！"),
+    REQUEST_NOT_FOUND(404, "Request not found!"),
 
     /**
-     * Method not supported！
+     * Resource not found!
      */
-    HTTP_BAD_METHOD(405, "Method not supported！"),
+    RESOURCE_NOT_FOUND(404, "Resource not found!"),
 
     /**
-     * Bad request！
+     * Method not supported!
      */
-    BAD_REQUEST(400, "Bad request！"),
+    HTTP_BAD_METHOD(405, "Method not supported!"),
 
     /**
-     * Parameters not match！
+     * Bad request!
      */
-    PARAM_NOT_MATCH(400, "Parameters not match！"),
+    BAD_REQUEST(400, "Bad request!"),
 
     /**
-     * Parameters cannot be empty！
+     * Parameters not match!
      */
-    PARAM_NOT_NULL(400, "Parameters cannot be empty！"),
+    PARAM_NOT_MATCH(400, "Parameters not match!"),
 
     /**
-     * User has been blocked！
+     * Parameters cannot be empty!
      */
-    USER_DISABLED(403, "User has been blocked！"),
+    PARAM_NOT_NULL(400, "Parameters cannot be empty!"),
 
     /**
-     * Incorrect username or password！
+     * User has been blocked!
      */
-    USERNAME_PASSWORD_ERROR(5001, "Incorrect username or password！"),
+    USER_DISABLED(403, "User has been blocked!"),
 
     /**
-     * Token Expired！
+     * Incorrect username or password!
      */
-    TOKEN_EXPIRED(5002, "Token Expired！"),
+    USERNAME_PASSWORD_ERROR(5001, "Incorrect username or password!"),
 
     /**
-     * Token parsing failure！
+     * Token Expired!
      */
-    TOKEN_PARSE_ERROR(5002, "token parsing failure！"),
+    TOKEN_EXPIRED(5002, "Token Expired!"),
 
     /**
-     * User is logged in at another location！
+     * Token parsing failure!
      */
-    TOKEN_OUT_OF_CTRL(5003, "User is logged in at another location！");
+    TOKEN_PARSE_ERROR(5002, "token parsing failure!"),
+
+    /**
+     * User is logged in at another location!
+     */
+    TOKEN_OUT_OF_CTRL(5003, "User is logged in at another location!");
 
 
     /**

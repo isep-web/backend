@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.isep.project.common.Status;
 import com.isep.project.config.JwtConfig;
-import com.isep.project.exception.SecurityRuntimeException;
+import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.vo.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -114,36 +114,36 @@ public class JwtUtil
             Long expire = stringRedisTemplate.getExpire(redisKey, TimeUnit.MILLISECONDS);
             if (Objects.isNull(expire) || expire <= 0)
             {
-                throw new SecurityRuntimeException(Status.TOKEN_EXPIRED);
+                throw new JwtRuntimeException(Status.TOKEN_EXPIRED);
             }
 
             // 校验redis中的JWT是否与当前的一致，不一致则代表用户已注销/用户在不同设备登录，均代表JWT已过期
             String redisToken = stringRedisTemplate.opsForValue().get(redisKey);
             if (!StrUtil.equals(jwt, redisToken))
-            {
-                throw new SecurityRuntimeException(Status.TOKEN_OUT_OF_CTRL);
+            {log.error("User is logged in at another location!");
+                throw new JwtRuntimeException(Status.TOKEN_OUT_OF_CTRL);
             }
             return claims;
         } catch (ExpiredJwtException e)
         {
-            log.error("Token 已过期");
-            throw new SecurityRuntimeException(Status.TOKEN_EXPIRED);
+            log.error("Token Expired!");
+            throw new JwtRuntimeException(Status.TOKEN_EXPIRED,"Token Expired!");
         } catch (UnsupportedJwtException e)
         {
-            log.error("不支持的 Token");
-            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
+            log.error("Unsupported Token!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Unsupported Token!");
         } catch (MalformedJwtException e)
         {
-            log.error("Token 无效");
-            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
+            log.error("Token parsing failure!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Token parsing failure!");
         } catch (SignatureException e)
         {
-            log.error("无效的 Token 签名");
-            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
+            log.error("Invalid Token signatures!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Invalid Token signatures!");
         } catch (IllegalArgumentException e)
         {
-            log.error("Token 参数不存在");
-            throw new SecurityRuntimeException(Status.TOKEN_PARSE_ERROR);
+            log.error("Token parameter does not exist!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Token parameter does not exist!");
         }
     }
 

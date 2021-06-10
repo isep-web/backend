@@ -1,7 +1,10 @@
 package com.isep.project.config;
 
+import com.isep.project.exception.handler.CustomAccessDeniedHandler;
 import com.isep.project.filter.JwtAuthenticationFilter;
 import com.isep.project.service.CustomUserDetailsService;
+import java.util.Arrays;
+import java.util.Collections;
 import javax.annotation.Resource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +18,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * <p>
@@ -36,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     private IgnoreConfig ignoreConfig;
 
     @Resource
-    private AccessDeniedHandler accessDeniedHandler;
+    private CustomAccessDeniedHandler accessDeniedHandler;
 
     @Resource
     private CustomUserDetailsService customUserDetailsService;
@@ -63,40 +68,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         auth.userDetailsService(customUserDetailsService).passwordEncoder(encoder());
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
 
         // @formatter:off
         http.cors()
-                // 关闭 CSRF
-                .and().csrf().disable()
-                // 登录行为由自己实现，参考 AuthController#login
+                .and()
+                .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .logout().disable()
 
-                // 认证请求
                 .authorizeRequests()
-                // 所有请求都需要登录访问
-//                .anyRequest()
-//                .authenticated()
-                // RBAC 动态 url 认证
                 .anyRequest()
-                .access("@rbacAuthorityService.hasPermission(request,authentication)")
+                .access("@authorityService.hasPermission(request,authentication)")
 
-                // 登出行为由自己实现，参考 AuthController#logout
-                .and().logout().disable()
-                // Session 管理
+                .and()
                 .sessionManagement()
-                // 因为使用了JWT，所以这里不管理Session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                // 异常处理
-                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
-        // @formatter:on
-
-        // 添加自定义 JWT 过滤器
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
     /**

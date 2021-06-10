@@ -1,6 +1,6 @@
-package com.isep.project.common;
+package com.isep.project.payload;
 
-import com.isep.project.exception.SecurityRuntimeException;
+import com.isep.project.common.Status;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,18 +39,5 @@ public class ApiResponse implements Serializable
         this.status = status.getStatus();
         this.message = status.getMessage();
         this.data = data;
-    }
-
-    /**
-     * Build Api response with subclass of {@link SecurityRuntimeException}
-     *
-     * @param t   exception
-     * @param <T> subclass of {@link SecurityRuntimeException}
-     */
-    public <T extends SecurityRuntimeException> ApiResponse(T t)
-    {
-        this.status = t.getStatus();
-        this.message = t.getMessage();
-        this.data = t.getData();
     }
 }

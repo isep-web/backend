@@ -7,7 +7,7 @@ import com.google.common.collect.Multimap;
 import com.isep.project.common.Status;
 import com.isep.project.entity.Permission;
 import com.isep.project.entity.Role;
-import com.isep.project.exception.SecurityRuntimeException;
+import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.repository.ApplicationRepository;
 import com.isep.project.repository.HouseRepository;
 import com.isep.project.repository.PermissionRepository;
@@ -42,7 +42,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 @Slf4j
 @Component
-public class RbacAuthorityService
+public class AuthorityService
 {
 
     private static final List<String> R = Lists
@@ -207,7 +207,7 @@ public class RbacAuthorityService
             {
                 if (!urlMapping.get(uri).contains(currentMethod))
                 {
-                    throw new SecurityRuntimeException(Status.HTTP_BAD_METHOD);
+                    throw new JwtRuntimeException(Status.HTTP_BAD_METHOD);
                 } else
                 {
                     return;
@@ -215,13 +215,13 @@ public class RbacAuthorityService
             }
         }
 
-        throw new SecurityRuntimeException(Status.REQUEST_NOT_FOUND);
+        throw new JwtRuntimeException(Status.REQUEST_NOT_FOUND);
     }
 
     /**
-     * 获取 所有URL Mapping，返回格式为{"/test":["GET","POST"],"/sys":["GET","DELETE"]}
+     * Get all URL mapping
      *
-     * @return {@link ArrayListMultimap} 格式的 URL Mapping
+     * @return {@link ArrayListMultimap} URL Mapping
      */
     private Multimap<String, String> allUrlMapping()
     {
