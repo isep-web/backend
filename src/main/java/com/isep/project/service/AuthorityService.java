@@ -11,6 +11,7 @@ import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.repository.ApplicationRepository;
 import com.isep.project.repository.HouseRepository;
 import com.isep.project.repository.PermissionRepository;
+import com.isep.project.repository.PictureRepository;
 import com.isep.project.repository.RoleRepository;
 import com.isep.project.vo.UserPrincipal;
 import java.util.ArrayList;
@@ -74,6 +75,9 @@ public class AuthorityService
 
     @Resource
     private ApplicationRepository applicationRepository;
+
+    @Resource
+    private PictureRepository pictureRepository;
 
     public boolean hasPermission(HttpServletRequest request, Authentication authentication)
     {
@@ -156,12 +160,26 @@ public class AuthorityService
                             owner.add(Long.valueOf(uris[2]));
                             break;
                         case "houses":
-                            owner.add(houseRepository.selectById(Long.valueOf(uris[2])).getUserId());
+                            owner.add(
+                                    houseRepository.selectById(Long.valueOf(uris[2])).getUserId());
                             break;
                         case "applications":
                             owner.add(applicationRepository.selectById(Long.valueOf(uris[2]))
                                     .getSourceUser().getId());
                             break;
+                        case "pictures":
+                            if (pictureRepository.selectById(Long.valueOf(uris[2])).getType() == 0)
+                            {
+                                owner.add(pictureRepository.selectById(Long.valueOf(uris[2]))
+                                        .getUser()
+                                        .getId());
+
+                            } else
+                            {
+                                owner.add(pictureRepository.selectById(Long.valueOf(uris[2]))
+                                        .getHouse()
+                                        .getId());
+                            }
                         default:
                             owner.add(Long.valueOf(uris[2]));
                             break;
@@ -197,11 +215,6 @@ public class AuthorityService
 
         for (String uri : urlMapping.keySet())
         {
-            // 通过 AntPathRequestMatcher 匹配 url
-            // 可以通过 2 种方式创建 AntPathRequestMatcher
-            // 1：new AntPathRequestMatcher(uri,method) 这种方式可以直接判断方法是否匹配，因为这里我们把 方法不匹配
-            // 自定义抛出，所以，我们使用第2种方式创建
-            // 2：new AntPathRequestMatcher(uri) 这种方式不校验请求方法，只校验请求路径
             AntPathRequestMatcher antPathMatcher = new AntPathRequestMatcher(uri);
             if (antPathMatcher.matches(request))
             {
