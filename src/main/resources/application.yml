@@ -114,3 +114,5 @@ custom:
             - "/**"
         pattern:
             - "/pictures/**"
+        patch:
+            - "/register"
