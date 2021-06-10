@@ -1,4 +1,4 @@
-package com.isep.project.util;
+package com.isep.project.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -29,18 +29,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
- * <p>
- * JWT 工具类
- * </p>
- *
- * @author yangkai.shen
- * @date Created in 2018-12-07 13:42
+ * @author : Xuan MIAO
+ * @version : 2.0.0
+ * @date : 2021/6/10
  */
-@EnableConfigurationProperties(JwtConfig.class)
-@Configuration
 @Slf4j
-public class JwtUtil
+@Configuration
+@EnableConfigurationProperties(JwtConfig.class)
+public class JwtService
 {
+
+    private static final String TOKEN_PREFIX = "Bearer ";
 
     @Resource
     private JwtConfig jwtConfig;
@@ -49,24 +48,24 @@ public class JwtUtil
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 创建JWT
+     * 创建Jwt
      *
-     * @param rememberMe  记住我
-     * @param id          用户id
-     * @param username     用户名
-     * @param roles       用户角色
-     * @param authorities 用户权限
-     * @return JWT
+     * @param rememberMe  remember me
+     * @param id          user id
+     * @param username    username
+     * @param roles       user roles
+     * @param authorities user authentication
+     * @return Jwt
      */
-    public String createJWT(Boolean rememberMe, Long id, String username, List<String> roles,
-            Collection<? extends GrantedAuthority> authorities)
+    public String createJwt(Boolean rememberMe, Long id, String username, List<String> roles,
+                            Collection<? extends GrantedAuthority> authorities)
     {
         Date now = new Date();
         JwtBuilder builder = Jwts.builder().setId(id.toString()).setSubject(username)
                 .setIssuedAt(now).signWith(SignatureAlgorithm.HS256, jwtConfig.getKey())
                 .claim("roles", roles).claim("authorities", authorities);
 
-        // 设置过期时间
+        // Set ttl or remember me ttl
         Long ttl = rememberMe ? jwtConfig.getRememberTtl() : jwtConfig.getTtl();
         if (ttl > 0)
         {
@@ -74,33 +73,33 @@ public class JwtUtil
         }
 
         String jwt = builder.compact();
-        // 将生成的JWT保存至Redis
+        // Save jet to redis
         stringRedisTemplate.opsForValue()
                 .set(jwtConfig.getRedisKeyPrefix() + username, jwt, ttl, TimeUnit.MILLISECONDS);
         return jwt;
     }
 
     /**
-     * 创建JWT
+     * Create Jwt
      *
-     * @param authentication 用户认证信息
-     * @param rememberMe     记住我
-     * @return JWT
+     * @param authentication User authentication
+     * @param rememberMe     remember me
+     * @return Jwt
      */
-    public String createJWT(Authentication authentication, Boolean rememberMe)
+    public String createJwt(Authentication authentication, Boolean rememberMe)
     {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        return createJWT(rememberMe, userPrincipal.getId(), userPrincipal.getUsername(),
+        return createJwt(rememberMe, userPrincipal.getId(), userPrincipal.getUsername(),
                 userPrincipal.getRoles(), userPrincipal.getAuthorities());
     }
 
     /**
-     * 解析JWT
+     * Decode Jwt
      *
-     * @param jwt JWT
+     * @param jwt Jwt
      * @return {@link Claims}
      */
-    public Claims parseJWT(String jwt)
+    public Claims decodeJwt(String jwt)
     {
         try
         {
@@ -110,80 +109,82 @@ public class JwtUtil
             String username = claims.getSubject();
             String redisKey = jwtConfig.getRedisKeyPrefix() + username;
 
-            // 校验redis中的JWT是否存在
+            // Check if jwt expire
             Long expire = stringRedisTemplate.getExpire(redisKey, TimeUnit.MILLISECONDS);
             if (Objects.isNull(expire) || expire <= 0)
             {
                 throw new JwtRuntimeException(Status.TOKEN_EXPIRED);
             }
 
-            // 校验redis中的JWT是否与当前的一致，不一致则代表用户已注销/用户在不同设备登录，均代表JWT已过期
+            // Check if jwt valid
             String redisToken = stringRedisTemplate.opsForValue().get(redisKey);
             if (!StrUtil.equals(jwt, redisToken))
-            {log.error("User is logged in at another location!");
+            {
+                log.error("User is logged in at another location!");
                 throw new JwtRuntimeException(Status.TOKEN_OUT_OF_CTRL);
             }
             return claims;
         } catch (ExpiredJwtException e)
         {
             log.error("Token Expired!");
-            throw new JwtRuntimeException(Status.TOKEN_EXPIRED,"Token Expired!");
+            throw new JwtRuntimeException(Status.TOKEN_EXPIRED, "Token Expired!");
         } catch (UnsupportedJwtException e)
         {
             log.error("Unsupported Token!");
-            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Unsupported Token!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR, "Unsupported Token!");
         } catch (MalformedJwtException e)
         {
             log.error("Token parsing failure!");
-            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Token parsing failure!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR, "Token parsing failure!");
         } catch (SignatureException e)
         {
             log.error("Invalid Token signatures!");
-            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Invalid Token signatures!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR, "Invalid Token signatures!");
         } catch (IllegalArgumentException e)
         {
             log.error("Token parameter does not exist!");
-            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,"Token parameter does not exist!");
+            throw new JwtRuntimeException(Status.TOKEN_PARSE_ERROR,
+                    "Token parameter does not exist!");
         }
     }
 
     /**
-     * 设置JWT过期
+     * Set jwt invalid
      *
-     * @param request 请求
+     * @param request HttpServletRequest
      */
-    public void invalidateJWT(HttpServletRequest request)
+    public void invalidateJwt(HttpServletRequest request)
     {
         String jwt = getJwtFromRequest(request);
-        String username = getUsernameFromJWT(jwt);
-        // 从redis中清除JWT
+        String username = getUsernameFromJwt(jwt);
+        // Delete from redis
         stringRedisTemplate.delete(jwtConfig.getRedisKeyPrefix() + username);
     }
 
     /**
-     * 根据 jwt 获取用户名
+     * Get username from jwt
      *
-     * @param jwt JWT
-     * @return 用户名
+     * @param jwt Jwt
+     * @return username
      */
-    public String getUsernameFromJWT(String jwt)
+    public String getUsernameFromJwt(String jwt)
     {
-        Claims claims = parseJWT(jwt);
+        Claims claims = decodeJwt(jwt);
         return claims.getSubject();
     }
 
     /**
-     * 从 request 的 header 中获取 JWT
+     * Get jwt from request header
      *
-     * @param request 请求
-     * @return JWT
+     * @param request HttpServletRequest
+     * @return Jwt
      */
     public String getJwtFromRequest(HttpServletRequest request)
     {
         String bearerToken = request.getHeader("Authorization");
-        if (StrUtil.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer "))
+        if (StrUtil.isNotBlank(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX))
         {
-            return bearerToken.substring(7);
+            return bearerToken.substring(TOKEN_PREFIX.length());
         }
         return null;
     }

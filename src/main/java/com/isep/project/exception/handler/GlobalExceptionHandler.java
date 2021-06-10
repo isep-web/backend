@@ -31,7 +31,7 @@ public class GlobalExceptionHandler
 {
 
     @ExceptionHandler(value = Exception.class)
-    public void handlerException(HttpServletResponse response, Exception e)
+    public void handlerException(HttpServletResponse response, Exception e) throws Exception
     {
         if (e instanceof NoHandlerFoundException)
         {
@@ -85,8 +85,9 @@ public class GlobalExceptionHandler
             ResponseService.renderJson(response, Status.RESOURCE_NOT_FOUND, e.getMessage());
         } else
         {
-            log.error("[GlobalExceptionHandler]{}: Message: {} ", e.getClass(), e.getMessage());
-            ResponseService.renderJson(response, Status.ERROR, e.getMessage());
+            throw e;
+//            log.error("[GlobalExceptionHandler]{}: Message: {} ", e.getClass(), e.getMessage());
+//            ResponseService.renderJson(response, Status.ERROR, e.getMessage());
         }
     }
 }
