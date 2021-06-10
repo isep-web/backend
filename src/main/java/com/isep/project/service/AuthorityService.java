@@ -261,6 +261,8 @@ public class AuthorityService
         urlMapping.put("/constraints", "GET");
         urlMapping.putAll("/houses", CR);
         urlMapping.putAll("/houses/*/**", CURD);
+        urlMapping.putAll("/messages", CR);
+        urlMapping.putAll("/messages/*/**", CURD);
         urlMapping.putAll("/pictures", CR);
         urlMapping.putAll("/pictures/*/**", CURD);
         urlMapping.put("/services", "GET");
