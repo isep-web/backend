@@ -112,3 +112,5 @@ custom:
             - "/auth"
         options:
             - "/**"
+        pattern:
+            - "/pictures/**"
