@@ -1,5 +1,6 @@
 package com.isep.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Set;
@@ -11,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Xuan MIAO
@@ -20,17 +22,17 @@ import lombok.EqualsAndHashCode;
 @Table(name = "t_user")
 @EqualsAndHashCode(callSuper = true, exclude = {"sentApplications", "receivedApplications",
                                                 "avatar"})
+@NoArgsConstructor
+@JsonIgnoreProperties({"createdTime", "lastUpdatedTime","username","password"})
 public class User extends BaseEntity implements Serializable
 {
 
 
     private static final long serialVersionUID = 5780310943968550L;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "f_username", nullable = false)
     private String username;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "f_password", nullable = false)
     private String password;
 
@@ -73,27 +75,9 @@ public class User extends BaseEntity implements Serializable
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Picture avatar;
 
-//    @ManyToMany(targetEntity = Role.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JoinTable(name = "t_user__role",
-//            joinColumns = {@JoinColumn(name = "f_user_id", referencedColumnName = "f_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "f_role_id", referencedColumnName = "f_id")}
-//    )
-//    private Set<Role> roles;
-
-//    @Override
-//    public String toString()
-//    {
-//        return "User{" +
-//                "username='" + username + '\'' +
-//                ", password='" + password + '\'' +
-//                ", status=" + status +
-//                ", displayName='" + displayName + '\'' +
-//                ", email='" + email + '\'' +
-//                ", phone='" + phone + '\'' +
-//                ", sex=" + sex +
-//                ", language='" + language + '\'' +
-//                ", description='" + description + '\'' +
-//                ", location='" + location + '\'' +
-//                '}';
-//    }
+    public User(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+    }
 }

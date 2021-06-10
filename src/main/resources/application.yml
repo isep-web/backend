@@ -102,7 +102,7 @@ custom:
     ignores:
         post:
             - "/auth"
-            - "/users"
+            - "/register"
         get:
             - "/v3/**"
             - "/swagger-ui.html"

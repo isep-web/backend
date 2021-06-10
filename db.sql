@@ -386,7 +386,8 @@ VALUES (1, 'amenities r', '/amenities', 'R', '2021-06-07 22:07:07', '2021-06-07 
        (9, 'services r', '/services', 'R', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
        (10, 'users cr', '/users', 'CR', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
        (11, 'users/id crud', '/users/*/**', 'CURD', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
-       (12, 'logout', '/auth', 'CURD', '2021-06-07 22:07:07', '2021-06-07 22:07:07')
+       (12, 'logout', '/auth', 'DELETE', '2021-06-07 22:07:07', '2021-06-07 22:07:07'),
+       (13, 'change password', '/register', 'CURD', '2021-06-07 22:07:07', '2021-06-07 22:07:07')
 ;
 
 /*!40000 ALTER TABLE t_permission
@@ -402,15 +403,15 @@ DROP TABLE IF EXISTS t_picture;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE t_picture
 (
-    f_id                bigint                                 NOT NULL AUTO_INCREMENT,
-    f_content_id        varchar(100) COLLATE utf8mb4_general_ci         DEFAULT NULL,
-    f_content_length    bigint                                          DEFAULT NULL,
-    f_mime_type         varchar(45) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'text/plain',
-    f_type              int                                             DEFAULT '1' COMMENT '0=avatar/1=house_photo',
-    f_house_id          bigint                                          DEFAULT NULL,
-    f_user_id           bigint                                          DEFAULT NULL,
-    f_created_time      datetime                                        DEFAULT NULL,
-    f_last_updated_time datetime                                        DEFAULT NULL,
+    f_id                bigint NOT NULL AUTO_INCREMENT,
+    f_content_id        varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    f_content_length    bigint                                  DEFAULT NULL,
+    f_mime_type         varchar(45) COLLATE utf8mb4_general_ci  DEFAULT 'text/plain',
+    f_type              int                                     DEFAULT '1' COMMENT '0=avatar/1=house_photo',
+    f_house_id          bigint                                  DEFAULT NULL,
+    f_user_id           bigint                                  DEFAULT NULL,
+    f_created_time      datetime                                DEFAULT NULL,
+    f_last_updated_time datetime                                DEFAULT NULL,
     PRIMARY KEY (f_id),
     KEY fk_picture_house_idx (f_house_id),
     KEY fk_picture_user_idx (f_user_id),
@@ -507,6 +508,8 @@ VALUES (1, 1, '2021-06-07 22:07:12'),
        (1, 9, '2021-06-07 22:07:12'),
        (1, 10, '2021-06-07 22:07:12'),
        (1, 11, '2021-06-07 22:07:12'),
+       (1, 12, '2021-06-07 22:07:12'),
+       (1, 13, '2021-06-07 22:07:12'),
        (2, 1, '2021-06-07 22:07:12'),
        (2, 2, '2021-06-07 22:07:12'),
        (2, 3, '2021-06-07 22:07:12'),
@@ -516,7 +519,9 @@ VALUES (1, 1, '2021-06-07 22:07:12'),
        (2, 7, '2021-06-07 22:07:12'),
        (2, 8, '2021-06-07 22:07:12'),
        (2, 9, '2021-06-07 22:07:12'),
-       (2, 11, '2021-06-07 22:07:12');
+       (2, 11, '2021-06-07 22:07:12'),
+       (2, 12, '2021-06-07 22:07:12'),
+       (2, 13, '2021-06-07 22:07:12');
 /*!40000 ALTER TABLE t_role__permission
     ENABLE KEYS */;
 UNLOCK TABLES;

@@ -3,8 +3,6 @@ package com.isep.project.config;
 import com.isep.project.exception.handler.CustomAccessDeniedHandler;
 import com.isep.project.filter.JwtAuthenticationFilter;
 import com.isep.project.service.CustomUserDetailsService;
-import java.util.Arrays;
-import java.util.Collections;
 import javax.annotation.Resource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * <p>
@@ -73,7 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
 
-        // @formatter:off
         http.cors()
                 .and()
                 .csrf().disable()
