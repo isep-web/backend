@@ -16,14 +16,20 @@ public class RegisterRequest implements Serializable
     private static final long serialVersionUID = -565756242815603076L;
 
     /**
-     * 用户名或邮箱或手机号
+     * 用户名
      */
-    @NotBlank(message = "用户名不能为空")
+    @NotBlank(message = "Username can't null")
     private String username;
 
     /**
      * 密码
      */
-    @NotBlank(message = "密码不能为空")
+    @NotBlank(message = "Password can't null")
     private String password;
+
+    @NotBlank(message = "Email can't null")
+    private String email;
+
+    @NotBlank(message = "Phone can't null")
+    private String phone;
 }

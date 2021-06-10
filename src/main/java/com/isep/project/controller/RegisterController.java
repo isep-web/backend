@@ -42,6 +42,6 @@ public class RegisterController
     @PostMapping("/register")
     public User register(@RequestBody RegisterRequest req)
     {
-        return registerService.register(req.getUsername(),req.getPassword());
+        return registerService.register(req.getUsername(),req.getPassword(),req.getEmail(),req.getPhone());
     }
 }

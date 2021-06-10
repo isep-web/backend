@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true, exclude = {"sentApplications", "receivedApplications",
                                                 "avatar"})
 @NoArgsConstructor
-@JsonIgnoreProperties({"createdTime", "lastUpdatedTime","username","password"})
+@JsonIgnoreProperties({"createdTime", "lastUpdatedTime", "username", "password"})
 public class User extends BaseEntity implements Serializable
 {
 
@@ -75,9 +75,11 @@ public class User extends BaseEntity implements Serializable
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Picture avatar;
 
-    public User(String username, String password)
+    public User(String username, String password, String email, String phone)
     {
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.phone = phone;
     }
 }

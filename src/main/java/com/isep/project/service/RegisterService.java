@@ -28,7 +28,8 @@ public class RegisterService
     {
 
         User user = userRepository
-                .findByUsername(jwtService.getUsernameFromJwt(jwtService.getJwtFromRequest(request)));
+                .findByUsername(
+                        jwtService.getUsernameFromJwt(jwtService.getJwtFromRequest(request)));
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);
         try
@@ -40,8 +41,9 @@ public class RegisterService
         }
     }
 
-    public User register(String username, String password)
+    public User register(String username, String password, String email, String phone)
     {
-        return userRepository.save(new User(username, bCryptPasswordEncoder.encode(password)));
+        return userRepository
+                .save(new User(username, bCryptPasswordEncoder.encode(password), email, phone));
     }
 }
