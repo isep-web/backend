@@ -1,6 +1,7 @@
 package com.isep.project.repository;
 
 import com.isep.project.entity.Message;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -13,8 +14,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface MessageRepository extends JpaRepository<Message, Long>,
         JpaSpecificationExecutor<Message>
 {
-    Optional<Message> findBySourceUserId(Long userId);
+    List<Message> findBySourceUserId(Long userId);
 
-    Optional<Message> findByTargetUserId(Long userId);
+    List<Message> findByTargetUserId(Long userId);
 
 }

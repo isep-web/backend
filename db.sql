@@ -328,6 +328,7 @@ CREATE TABLE t_message
     CONSTRAINT fk_message_user_source FOREIGN KEY (f_source_user_id) REFERENCES t_user (f_id) ON UPDATE CASCADE,
     CONSTRAINT fk_message_user_target FOREIGN KEY (f_target_user_id) REFERENCES t_user (f_id) ON UPDATE CASCADE
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -339,6 +340,12 @@ CREATE TABLE t_message
 LOCK TABLES t_message WRITE;
 /*!40000 ALTER TABLE t_message
     DISABLE KEYS */;
+INSERT INTO t_message
+VALUES (1, 1, 2, 0, '1 to 2 not read', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (2, 1, 2, 1, '1 to 2 read', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (3, 2, 1, 0, '1 to 2 not read', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (4, 2, 1, 1, '1 to 2 not read', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 /*!40000 ALTER TABLE t_message
     ENABLE KEYS */;
 UNLOCK TABLES;
