@@ -173,6 +173,8 @@ public class AuthorityService
                         case "applications":
                             owner.add(applicationRepository.selectById(Long.valueOf(uris[2]))
                                     .getSourceUser().getId());
+                            owner.add(applicationRepository.selectById(Long.valueOf(uris[2]))
+                                    .getTargetUser().getId());
                             break;
                         case "pictures":
                             if (pictureRepository.selectById(Long.valueOf(uris[2])).getType() == 0)
