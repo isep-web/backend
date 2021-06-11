@@ -5,12 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * <p>
- * JWT 响应返回
- * </p>
+ * Jwt response
  *
- * @author yangkai.shen
- * @date Created in 2018-12-10 16:01
+ * @author : Xuan MIAO
+ * @version : 1.0.0
+ * @date : 2021/6/11
  */
 @Data
 @NoArgsConstructor
@@ -19,11 +18,11 @@ public class JwtResponse
 {
 
     /**
-     * token 字段
+     * token
      */
     private String token;
     /**
-     * token类型
+     * token
      */
     private String tokenType = "Bearer";
 

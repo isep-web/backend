@@ -22,12 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * 认证 Controller，包括用户注册，用户登录请求
- * </p>
+ * Auth controller
  *
- * @author yangkai.shen
- * @date Created in 2018-12-07 17:23
+ * @author : Xuan MIAO
+ * @version : 2.0.0
+ * @date : 2021/6/8
  */
 @Slf4j
 @RestController

@@ -9,6 +9,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 /**
+ * Handle {@link AccessDeniedException}
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/6/10

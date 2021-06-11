@@ -4,32 +4,22 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * <p>
- * 登录请求参数
- * </p>
+ * Login request
  *
- * @author yangkai.shen
- * @date Created in 2018-12-10 15:52
+ * @author : Xuan MIAO
+ * @version : 1.0.0
+ * @date : 2021/6/8
  */
 @Data
 public class LoginRequest
 {
 
-    /**
-     * 用户名或邮箱或手机号
-     */
-    @NotBlank(message = "用户名不能为空")
+    @NotBlank(message = "usernameOrEmailOrPhone can't be null")
     private String usernameOrEmailOrPhone;
 
-    /**
-     * 密码
-     */
-    @NotBlank(message = "密码不能为空")
+    @NotBlank(message = "password can't be null")
     private String password;
 
-    /**
-     * 记住我
-     */
     private Boolean rememberMe = false;
 
 }

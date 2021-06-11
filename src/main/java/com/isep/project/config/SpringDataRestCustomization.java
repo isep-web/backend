@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 /**
+ * Rest CORS config
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/5/23

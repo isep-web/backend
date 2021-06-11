@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
+ * House advanced search serice
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/5/31

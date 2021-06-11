@@ -8,6 +8,7 @@ import com.isep.project.payload.ApiResponse;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * Response generate service
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date : 2021/5/31
  */
 @Slf4j
+@Service
 public class ResponseService
 {
 
@@ -31,6 +33,7 @@ public class ResponseService
     {
         try
         {
+            //CORS
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Methods", "*");
             response.setContentType("application/json;charset=UTF-8");

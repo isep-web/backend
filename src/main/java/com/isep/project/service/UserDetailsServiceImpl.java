@@ -1,14 +1,11 @@
 package com.isep.project.service;
 
-import com.isep.project.entity.Permission;
 import com.isep.project.entity.Role;
 import com.isep.project.entity.User;
-import com.isep.project.repository.PermissionRepository;
 import com.isep.project.repository.RoleRepository;
 import com.isep.project.repository.UserRepository;
-import com.isep.project.vo.UserPrincipal;
+import com.isep.project.common.UserDetailsImpl;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,15 +13,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- * 自定义UserDetails查询
- * </p>
- *
- * @author yangkai.shen
- * @date Created in 2018-12-10 10:29
+ * Response generate service
+ * @author : Xuan MIAO
+ * @version : 1.0.0
+ * @date : 2021/5/31
  */
 @Service
-public class CustomUserDetailsService implements UserDetailsService
+public class UserDetailsServiceImpl implements UserDetailsService
 {
 
     @Resource
@@ -42,9 +37,10 @@ public class CustomUserDetailsService implements UserDetailsService
                         usernameOrEmailOrPhone).orElseThrow(
                         () -> new UsernameNotFoundException("Can't find user information:  " + usernameOrEmailOrPhone));
         List<Role> roles = roleRepository.selectByUserId(user.getId());
+        //Avoid infinite loop
         user.setReceivedApplications(null);
         user.setSentApplications(null);
         user.setAvatar(null);
-        return UserPrincipal.create(user, roles);
+        return UserDetailsImpl.create(user, roles);
     }
 }

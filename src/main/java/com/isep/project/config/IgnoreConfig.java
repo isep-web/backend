@@ -19,47 +19,47 @@ public class IgnoreConfig
 {
 
     /**
-     * 需要忽略的 URL 格式，不考虑请求方法
+     * Ignored URL (All methods)
      */
     private List<String> pattern = new ArrayList<>();
 
     /**
-     * 需要忽略的 GET 请求
+     * Ignored GET 
      */
     private List<String> get = new ArrayList<>();
 
     /**
-     * 需要忽略的 POST 请求
+     * Ignored POST 
      */
     private List<String> post = new ArrayList<>();
 
     /**
-     * 需要忽略的 DELETE 请求
+     * Ignored DELETE 
      */
     private List<String> delete = new ArrayList<>();
 
     /**
-     * 需要忽略的 PUT 请求
+     * Ignored PUT 
      */
     private List<String> put = new ArrayList<>();
 
     /**
-     * 需要忽略的 HEAD 请求
+     * Ignored HEAD 
      */
     private List<String> head = new ArrayList<>();
 
     /**
-     * 需要忽略的 PATCH 请求
+     * Ignored PATCH 
      */
     private List<String> patch = new ArrayList<>();
 
     /**
-     * 需要忽略的 OPTIONS 请求
+     * Ignored OPTIONS 
      */
     private List<String> options = new ArrayList<>();
 
     /**
-     * 需要忽略的 TRACE 请求
+     * Ignored TRACE 
      */
     private List<String> trace = new ArrayList<>();
 }

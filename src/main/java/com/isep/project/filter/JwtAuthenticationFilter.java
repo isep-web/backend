@@ -7,7 +7,7 @@ import com.google.common.collect.Sets;
 import com.isep.project.common.Status;
 import com.isep.project.config.IgnoreConfig;
 import com.isep.project.exception.JwtRuntimeException;
-import com.isep.project.service.CustomUserDetailsService;
+import com.isep.project.service.UserDetailsServiceImpl;
 import com.isep.project.service.JwtService;
 import com.isep.project.service.ResponseService;
 import java.io.IOException;
@@ -32,8 +32,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * JWT filter
  *
  * @author : Xuan MIAO
- * @version : 1.0.0
- * @date : 2021/6/5
+ * @version : 2.0.0
+ * @date : 2021/6/8
  */
 @Slf4j
 @Component
@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 {
 
     @Resource
-    private CustomUserDetailsService customUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Resource
     private JwtService jwtService;
@@ -69,7 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
             {
                 String username = jwtService.getUsernameFromJwt(jwt);
 
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(

@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.isep.project.common.Status;
 import com.isep.project.config.JwtConfig;
 import com.isep.project.exception.JwtRuntimeException;
-import com.isep.project.vo.UserPrincipal;
+import com.isep.project.common.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtBuilder;
@@ -23,10 +23,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Service;
 
 /**
  * @author : Xuan MIAO
@@ -34,7 +34,7 @@ import org.springframework.security.core.GrantedAuthority;
  * @date : 2021/6/10
  */
 @Slf4j
-@Configuration
+@Service
 @EnableConfigurationProperties(JwtConfig.class)
 public class JwtService
 {
@@ -48,7 +48,7 @@ public class JwtService
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 创建Jwt
+     * Create jwt
      *
      * @param rememberMe  remember me
      * @param id          user id
@@ -88,9 +88,9 @@ public class JwtService
      */
     public String createJwt(Authentication authentication, Boolean rememberMe)
     {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        return createJwt(rememberMe, userPrincipal.getId(), userPrincipal.getUsername(),
-                userPrincipal.getRoles(), userPrincipal.getAuthorities());
+        UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return createJwt(rememberMe, userDetailsImpl.getId(), userDetailsImpl.getUsername(),
+                userDetailsImpl.getRoles(), userDetailsImpl.getAuthorities());
     }
 
     /**

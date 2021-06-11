@@ -10,6 +10,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+/**
+ * @author : Xuan MIAO
+ * @version : 1.0.0
+ * @date : 2021/5/5
+ */
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>
 {
 

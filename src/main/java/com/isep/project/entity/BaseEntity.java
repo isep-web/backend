@@ -16,6 +16,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 /**
+ * Base entity with id and auditing
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/5/5

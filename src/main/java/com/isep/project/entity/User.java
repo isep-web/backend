@@ -19,7 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * @author Xuan MIAO
+ * @author : Xuan MIAO
+ * @version : 4.0.0
+ * @date : 2021/6/10
  */
 @Data
 @Entity

@@ -5,6 +5,8 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
+ * Register request
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/6/10

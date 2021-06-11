@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * @author : Xuan MIAO
- * @version : 1.0.0
+ * @version : 3.0.0
  * @date : 2021/5/5
  */
 @Data

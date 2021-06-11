@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * House advanced search controller
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/5/31

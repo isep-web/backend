@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author Xuan MIAO
+ * @author : Xuan MIAO
+ * @version : 3.0.0
+ * @date : 2021/6/8
  */
 @Data
 @Entity
