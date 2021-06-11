@@ -278,6 +278,7 @@ public class AuthorityService
         urlMapping.put("/services", "GET");
         urlMapping.putAll("/users", CR);
         urlMapping.putAll("/users/*/**", CURD);
+        urlMapping.putAll("/roles/**", CURD);
 
         return urlMapping;
     }

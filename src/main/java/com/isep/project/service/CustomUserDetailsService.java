@@ -33,9 +33,6 @@ public class CustomUserDetailsService implements UserDetailsService
     @Resource
     private RoleRepository roleRepository;
 
-    @Resource
-    private PermissionRepository permissionRepository;
-
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmailOrPhone)
             throws UsernameNotFoundException
@@ -43,13 +40,11 @@ public class CustomUserDetailsService implements UserDetailsService
         User user = userRepository
                 .findByUsernameOrEmailOrPhone(usernameOrEmailOrPhone, usernameOrEmailOrPhone,
                         usernameOrEmailOrPhone).orElseThrow(
-                        () -> new UsernameNotFoundException("未找到用户信息 : " + usernameOrEmailOrPhone));
+                        () -> new UsernameNotFoundException("Can't find user information:  " + usernameOrEmailOrPhone));
         List<Role> roles = roleRepository.selectByUserId(user.getId());
-        List<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
-        List<Permission> permissions = permissionRepository.selectByRoleIdList(roleIds);
         user.setReceivedApplications(null);
         user.setSentApplications(null);
         user.setAvatar(null);
-        return UserPrincipal.create(user, roles, permissions);
+        return UserPrincipal.create(user, roles);
     }
 }

@@ -4,9 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -23,7 +27,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true, exclude = {"sentApplications", "receivedApplications",
                                                 "avatar"})
 @NoArgsConstructor
-@JsonIgnoreProperties({"createdTime", "lastUpdatedTime", "username", "password"})
+@JsonIgnoreProperties({"createdTime", "lastUpdatedTime", "username", "password", "roles"})
 public class User extends BaseEntity implements Serializable
 {
 
@@ -75,6 +79,13 @@ public class User extends BaseEntity implements Serializable
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Picture avatar;
 
+    @ManyToMany(targetEntity = Role.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "t_user__role",
+            joinColumns = {@JoinColumn(name = "f_user_id", referencedColumnName = "f_id")},
+            inverseJoinColumns = {@JoinColumn(name = "f_role_id", referencedColumnName = "f_id")}
+    )
+    private Set<Role> roles;
+
     public User(String username, String password, String email, String phone)
     {
         this.username = username;
@@ -82,4 +93,5 @@ public class User extends BaseEntity implements Serializable
         this.email = email;
         this.phone = phone;
     }
+
 }

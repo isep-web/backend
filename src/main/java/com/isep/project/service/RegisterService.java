@@ -1,9 +1,12 @@
 package com.isep.project.service;
 
 import com.isep.project.common.Status;
+import com.isep.project.entity.Role;
 import com.isep.project.entity.User;
 import com.isep.project.exception.JwtRuntimeException;
+import com.isep.project.repository.RoleRepository;
 import com.isep.project.repository.UserRepository;
+import java.util.HashSet;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,8 +22,13 @@ public class RegisterService
 {
 
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
     @Resource
     private UserRepository userRepository;
+
+    @Resource
+    private RoleRepository roleRepository;
+
     @Resource
     private JwtService jwtService;
 
@@ -43,7 +51,10 @@ public class RegisterService
 
     public User register(String username, String password, String email, String phone)
     {
-        return userRepository
-                .save(new User(username, bCryptPasswordEncoder.encode(password), email, phone));
+        User user = new User(username, bCryptPasswordEncoder.encode(password), email, phone);
+        HashSet<Role> roles = new HashSet<>();
+        roles.add(roleRepository.getById(2L));
+        user.setRoles(roles);
+        return userRepository.save(user);
     }
 }

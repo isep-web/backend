@@ -1,7 +1,6 @@
 package com.isep.project.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.isep.project.entity.Permission;
 import com.isep.project.entity.Role;
 import com.isep.project.entity.User;
 import java.util.Collection;
@@ -45,10 +44,6 @@ public class UserPrincipal implements UserDetails
     @JsonIgnore
     private String password;
 
-    /**
-     * 昵称
-     */
-    private String displayName;
 
     /**
      * 手机
@@ -60,10 +55,6 @@ public class UserPrincipal implements UserDetails
      */
     private String email;
 
-    /**
-     * 性别，男-1，女-2
-     */
-    private Integer sex;
 
     /**
      * 状态，启用-1，禁用-0
@@ -90,13 +81,12 @@ public class UserPrincipal implements UserDetails
      */
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserPrincipal create(User user, List<Role> roles, List<Permission> permissions)
+    public static UserPrincipal create(User user, List<Role> roles)
     {
         List<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toList());
 
         return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(),
-                user.getDisplayName(), user.getPhone(), user.getEmail(),
-                user.getSex(), user.getStatus(), user.getCreatedTime().getTime(),
+                user.getPhone(), user.getEmail(), user.getStatus(), user.getCreatedTime().getTime(),
                 user.getLastUpdatedTime().getTime(),
                 roleNames, null);
     }
