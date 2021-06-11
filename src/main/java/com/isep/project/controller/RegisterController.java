@@ -2,6 +2,7 @@ package com.isep.project.controller;
 
 import com.isep.project.common.Status;
 import com.isep.project.entity.User;
+import com.isep.project.payload.ChangePasswordRequest;
 import com.isep.project.payload.RegisterRequest;
 import com.isep.project.service.RegisterService;
 import com.isep.project.service.ResponseService;
@@ -30,11 +31,11 @@ public class RegisterController
     private RegisterService registerService;
 
     @PatchMapping("/register")
-    public void changePassword(@RequestBody String password,
+    public void changePassword(@RequestBody ChangePasswordRequest password,
                                HttpServletRequest request,
                                HttpServletResponse response)
     {
-        registerService.changePassword(request, password);
+        registerService.changePassword(request, password.getPassword());
         ResponseService.renderJson(response, Status.SUCCESS, null);
 
     }
