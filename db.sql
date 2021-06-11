@@ -325,8 +325,8 @@ CREATE TABLE t_message
     PRIMARY KEY (f_id),
     KEY fk_message_user_source_idx (f_source_user_id),
     KEY fk_message_user_target_idx (f_target_user_id),
-    CONSTRAINT fk_message_user_source FOREIGN KEY (f_source_user_id) REFERENCES t_user (f_id) ON UPDATE CASCADE,
-    CONSTRAINT fk_message_user_target FOREIGN KEY (f_target_user_id) REFERENCES t_user (f_id) ON UPDATE CASCADE
+    CONSTRAINT fk_message_user_source FOREIGN KEY (f_source_user_id) REFERENCES t_user (f_id) ON UPDATE CASCADE ON DELETE CASCADE ,
+    CONSTRAINT fk_message_user_target FOREIGN KEY (f_target_user_id) REFERENCES t_user (f_id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
