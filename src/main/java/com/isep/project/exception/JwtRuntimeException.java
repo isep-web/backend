@@ -28,7 +28,8 @@ public class JwtRuntimeException extends RuntimeException
         super(status.getMessage());
         this.status = status;
     }
-    public JwtRuntimeException(Status status,Object data)
+
+    public JwtRuntimeException(Status status, Object data)
     {
         super(status.getMessage());
         this.status = status;

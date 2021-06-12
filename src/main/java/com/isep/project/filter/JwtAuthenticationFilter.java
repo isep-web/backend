@@ -7,9 +7,9 @@ import com.google.common.collect.Sets;
 import com.isep.project.common.Status;
 import com.isep.project.config.IgnoreConfig;
 import com.isep.project.exception.JwtRuntimeException;
-import com.isep.project.service.UserDetailsServiceImpl;
 import com.isep.project.service.JwtService;
 import com.isep.project.service.ResponseService;
+import com.isep.project.service.UserDetailsServiceImpl;
 import java.io.IOException;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -51,8 +51,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
-            @NotNull HttpServletResponse response,
-            @NotNull FilterChain filterChain) throws ServletException, IOException
+                                    @NotNull HttpServletResponse response,
+                                    @NotNull FilterChain filterChain)
+            throws ServletException, IOException
     {
 
         if (isIgnored(request))
@@ -81,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
                 filterChain.doFilter(request, response);
             } catch (JwtRuntimeException e)
             {
-                ResponseService.renderJson(response, e.getStatus(),e.getData());
+                ResponseService.renderJson(response, e.getStatus(), e.getData());
             }
         } else
         {

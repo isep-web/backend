@@ -2,10 +2,10 @@ package com.isep.project.controller;
 
 import com.isep.project.common.Status;
 import com.isep.project.exception.JwtRuntimeException;
+import com.isep.project.payload.JwtResponse;
 import com.isep.project.payload.LoginRequest;
 import com.isep.project.service.JwtService;
 import com.isep.project.service.ResponseService;
-import com.isep.project.payload.JwtResponse;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

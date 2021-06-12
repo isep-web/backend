@@ -1,10 +1,10 @@
 package com.isep.project.service;
 
+import com.isep.project.common.UserDetailsImpl;
 import com.isep.project.entity.Role;
 import com.isep.project.entity.User;
 import com.isep.project.repository.RoleRepository;
 import com.isep.project.repository.UserRepository;
-import com.isep.project.common.UserDetailsImpl;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Response generate service
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/5/31
@@ -35,7 +36,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
         User user = userRepository
                 .findByUsernameOrEmailOrPhone(usernameOrEmailOrPhone, usernameOrEmailOrPhone,
                         usernameOrEmailOrPhone).orElseThrow(
-                        () -> new UsernameNotFoundException("Can't find user information:  " + usernameOrEmailOrPhone));
+                        () -> new UsernameNotFoundException(
+                                "Can't find user information:  " + usernameOrEmailOrPhone));
         List<Role> roles = roleRepository.selectByUserId(user.getId());
         //Avoid infinite loop
         user.setReceivedApplications(null);

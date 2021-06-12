@@ -90,6 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 
     /**
      * Ignore config
+     *
      * @param web WebSecurity
      */
     @Override

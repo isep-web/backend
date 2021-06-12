@@ -24,42 +24,42 @@ public class IgnoreConfig
     private List<String> pattern = new ArrayList<>();
 
     /**
-     * Ignored GET 
+     * Ignored GET
      */
     private List<String> get = new ArrayList<>();
 
     /**
-     * Ignored POST 
+     * Ignored POST
      */
     private List<String> post = new ArrayList<>();
 
     /**
-     * Ignored DELETE 
+     * Ignored DELETE
      */
     private List<String> delete = new ArrayList<>();
 
     /**
-     * Ignored PUT 
+     * Ignored PUT
      */
     private List<String> put = new ArrayList<>();
 
     /**
-     * Ignored HEAD 
+     * Ignored HEAD
      */
     private List<String> head = new ArrayList<>();
 
     /**
-     * Ignored PATCH 
+     * Ignored PATCH
      */
     private List<String> patch = new ArrayList<>();
 
     /**
-     * Ignored OPTIONS 
+     * Ignored OPTIONS
      */
     private List<String> options = new ArrayList<>();
 
     /**
-     * Ignored TRACE 
+     * Ignored TRACE
      */
     private List<String> trace = new ArrayList<>();
 }

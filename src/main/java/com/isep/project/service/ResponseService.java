@@ -3,7 +3,6 @@ package com.isep.project.service;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.isep.project.common.Status;
-import com.isep.project.exception.JwtRuntimeException;
 import com.isep.project.payload.ApiResponse;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Response generate service
+ *
  * @author : Xuan MIAO
  * @version : 1.0.0
  * @date : 2021/5/31

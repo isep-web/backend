@@ -42,7 +42,9 @@ public class GlobalExceptionHandler
                     ((NoHandlerFoundException) e).getRequestURL());
         } else if (e instanceof HttpRequestMethodNotSupportedException)
         {
-            log.error("[GlobalExceptionHandler]HttpRequestMethodNotSupportedException: Method: {}, Action: {}",
+            log.error(
+                    "[GlobalExceptionHandler]HttpRequestMethodNotSupportedException: Method: {}, "
+                            + "Action: {}",
                     ((HttpRequestMethodNotSupportedException) e).getMethod(), JSONUtil.toJsonStr(
                             ((HttpRequestMethodNotSupportedException) e)
                                     .getSupportedHttpMethods()));
@@ -57,7 +59,9 @@ public class GlobalExceptionHandler
             ResponseService.renderJson(response, Status.BAD_REQUEST, e.getMessage());
         } else if (e instanceof MethodArgumentTypeMismatchException)
         {
-            log.error("[GlobalExceptionHandler]MethodArgumentTypeMismatchException: Param: {}, Message: {}",
+            log.error(
+                    "[GlobalExceptionHandler]MethodArgumentTypeMismatchException: Param: {}, "
+                            + "Message: {}",
                     ((MethodArgumentTypeMismatchException) e).getName(),
                     ((MethodArgumentTypeMismatchException) e).getMessage());
             ResponseService.renderJson(response, Status.PARAM_NOT_MATCH, e.getMessage());
@@ -68,20 +72,24 @@ public class GlobalExceptionHandler
             ResponseService.renderJson(response, Status.PARAM_NOT_NULL, e.getMessage());
         } else if (e instanceof BadCredentialsException)
         {
-            log.error("[GlobalExceptionHandler]BadCredentialsException: Message: {}", e.getMessage());
+            log.error("[GlobalExceptionHandler]BadCredentialsException: Message: {}",
+                    e.getMessage());
             ResponseService.renderJson(response, Status.USERNAME_PASSWORD_ERROR, e.getMessage());
         } else if (e instanceof DisabledException)
         {
-            log.error("[GlobalExceptionHandler]BadCredentialsException: Message: {}", e.getMessage());
+            log.error("[GlobalExceptionHandler]BadCredentialsException: Message: {}",
+                    e.getMessage());
             ResponseService.renderJson(response, Status.USER_DISABLED, e.getMessage());
         } else if (e instanceof JwtRuntimeException)
         {
             log.error("[GlobalExceptionHandler]DataManagerException: Code: {}, Message: {}",
                     ((JwtRuntimeException) e).getStatus().getStatus(), e.getMessage());
-            ResponseService.renderJson(response,((JwtRuntimeException) e).getStatus(), e.getMessage());
+            ResponseService
+                    .renderJson(response, ((JwtRuntimeException) e).getStatus(), e.getMessage());
         } else if (e instanceof ResourceNotFoundException)
         {
-            log.error("[GlobalExceptionHandler]ResourceNotFoundException: Message: {}", e.getMessage());
+            log.error("[GlobalExceptionHandler]ResourceNotFoundException: Message: {}",
+                    e.getMessage());
             ResponseService.renderJson(response, Status.RESOURCE_NOT_FOUND, e.getMessage());
         } else
         {

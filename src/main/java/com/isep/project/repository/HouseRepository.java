@@ -35,10 +35,11 @@ public interface HouseRepository extends JpaRepository<House, Long>, JpaSpecific
             + "(:amenities) group by h.id having count(h)= :amenitiesNum))"
     )
     List<Long> advSearch(@Param("areaMin") String areaMin,
-            @Param("areaMax") String areaMax, @Param("title") String title,
-            @Param("guestNumber") String guestNumber, @Param("amenities") List<Long> amenities,
-            @Param("amenitiesNum") Long amenitiesNum,
-            Pageable page);
+                         @Param("areaMax") String areaMax, @Param("title") String title,
+                         @Param("guestNumber") String guestNumber,
+                         @Param("amenities") List<Long> amenities,
+                         @Param("amenitiesNum") Long amenitiesNum,
+                         Pageable page);
 
     @RestResource(exported = false)
     @Query(value = "SELECT DISTINCT(h.id) FROM House h"
@@ -47,7 +48,8 @@ public interface HouseRepository extends JpaRepository<House, Long>, JpaSpecific
             + "AND (:title is null OR :title='' OR h.title like CONCAT('%',:title,'%'))"
             + "AND (:guestNumber is null OR :guestNumber='' OR h.guestNumber >=:guestNumber)")
     List<Long> advSearchWithoutAnemities(@Param("areaMin") String areaMin,
-            @Param("areaMax") String areaMax, @Param("title") String title,
-            @Param("guestNumber") String guestNumber, Pageable page);
+                                         @Param("areaMax") String areaMax,
+                                         @Param("title") String title,
+                                         @Param("guestNumber") String guestNumber, Pageable page);
 
 }

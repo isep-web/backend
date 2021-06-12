@@ -1,7 +1,6 @@
 package com.isep.project.repository;
 
 import com.isep.project.entity.Application;
-import com.isep.project.entity.House;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +15,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 public interface ApplicationRepository extends JpaRepository<Application, Long>,
         JpaSpecificationExecutor<Application>
 {
+
     @RestResource(exported = false)
     @Query(value = "select a from Application a where a.id = :id")
     Application selectById(@Param("id") Long id);

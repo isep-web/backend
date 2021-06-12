@@ -20,7 +20,7 @@ public class SpringDataRestCustomization implements RepositoryRestConfigurer
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config,
-            CorsRegistry cors)
+                                                     CorsRegistry cors)
     {
 
         cors.addMapping("/**")

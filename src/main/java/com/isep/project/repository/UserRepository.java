@@ -1,8 +1,6 @@
 package com.isep.project.repository;
 
-import com.isep.project.entity.House;
 import com.isep.project.entity.User;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
