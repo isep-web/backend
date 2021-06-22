@@ -21,7 +21,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jjwt.version>0.9.1</jjwt.version>
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>30.0-jre</guava.version>
         <hutool.version>5.4.5</hutool.version>
         <lombok.version>1.18.20</lombok.version>
     </properties>
