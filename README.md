@@ -9,6 +9,9 @@
 - Restful API
 - Maven
 - Swagger
+- MySQL
+- Redis
+- Front-end and back-end separation
 
 ## Architecture
 ![image](https://github.com/isep-web/backend/assets/60922756/8d25d2dd-9d6c-4c3b-97c9-c9b877353148)
